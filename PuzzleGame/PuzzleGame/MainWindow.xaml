@@ -1,12 +1,49 @@
-﻿<Window x:Class="PuzzleGame.MainWindow"
+﻿<Window x:Name="PuzzleGame" x:Class="PuzzleGame.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PuzzleGame"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="PuzzleGame" Height="450" Width="800" FontSize="14">
     <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+        </Grid.ColumnDefinitions>
 
+        <StackPanel Grid.Column="1" Margin="0,30,0,0">
+            <TextBlock HorizontalAlignment="Center" FontWeight="Bold">Описание эксперимента</TextBlock>
+            <TextBox Name="description" TextWrapping="Wrap" AcceptsReturn="True" Margin="20,20,20,20">
+                Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor
+            </TextBox>
+        </StackPanel>
+
+        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="30"></RowDefinition>
+                    <RowDefinition Height="30"></RowDefinition>
+                    <RowDefinition Height="30"></RowDefinition>
+                    <RowDefinition Height="30"></RowDefinition>
+                    <RowDefinition Height="30"></RowDefinition>
+                    <RowDefinition Height="30"></RowDefinition>
+                </Grid.RowDefinitions>
+
+                <TextBlock Grid.Row="0" MinWidth="300" VerticalAlignment="Center">Максимальное время решения задачи, с:</TextBlock>
+                <TextBox Grid.Row="0" Name="attemptDuration" PreviewTextInput="NumberValidationTextBox" HorizontalAlignment="Right" VerticalAlignment="Center" Width="30" Height="20" Text="100"/>
+
+                <TextBlock Grid.Row="1" VerticalAlignment="Center">Максимальное количество проб:</TextBlock>
+                <TextBox Grid.Row="1" Name="numAttempts" PreviewTextInput="NumberValidationTextBox" HorizontalAlignment="Right" VerticalAlignment="Center" Width="30" Height="20" Text="5"/>
+
+                <TextBlock Grid.Row="2" VerticalAlignment="Center">Обратная связь</TextBlock>
+                <CheckBox Grid.Row="2" Name="isFeedbackNeeded" VerticalAlignment="Center" Margin="110,0,0,0"></CheckBox>
+
+                <Button Grid.Row="3" Content="Выбрать файл с заданиями" Height="25" Width="170" HorizontalAlignment="Left" Margin="0,0,0,2" VerticalAlignment="Center" Click="ChoosePuzzleFile"></Button>
+                <TextBlock TextWrapping="Wrap" Name="FileName" Grid.Row="3" VerticalAlignment="Center" Margin="180,0,0,0">Файл не выбран</TextBlock>
+
+                <Button Grid.Row="5" Content="Начать тестирование" Height="25" Width="150" Click="StartTest"></Button>
+            </Grid>
+        </StackPanel>
     </Grid>
 </Window>

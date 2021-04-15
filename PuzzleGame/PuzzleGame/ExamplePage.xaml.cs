@@ -14,12 +14,15 @@ using System.Windows.Shapes;
 namespace PuzzleGame
 {
     /// <summary>
-    /// Логика взаимодействия для Page.xaml
+    /// Логика взаимодействия для ExamplePage.xaml
     /// </summary>
-    public partial class Page : Page
+    public partial class ExamplePage : ContentControl
     {
-        public Page()
+        public TestingParameters TestingParams { get; set; }
+
+        public ExamplePage(TestingParameters parameters)
         {
+            TestingParams = parameters;
             InitializeComponent();
         }
     }
