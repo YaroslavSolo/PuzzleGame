@@ -17,7 +17,7 @@ namespace PuzzleGame
     /// <summary>
     /// Логика взаимодействия для ParticipantForm.xaml
     /// </summary>
-    public partial class ParticipantForm : Page
+    public partial class ParticipantForm : ContentControl
     {
         public TestingParameters TestingParams { get; set; }
 
