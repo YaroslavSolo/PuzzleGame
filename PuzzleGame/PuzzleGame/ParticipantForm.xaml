@@ -13,9 +13,9 @@
             <ColumnDefinition></ColumnDefinition>
         </Grid.ColumnDefinitions>
 
-        <StackPanel Grid.Column="1" Margin="0,30,0,0">
+        <StackPanel Grid.Column="1" Margin="0,20,0,0" VerticalAlignment="Center">
             <TextBlock HorizontalAlignment="Center" FontWeight="Bold">Описание эксперимента</TextBlock>
-            <TextBlock Name="description" TextWrapping="Wrap" Margin="20,20,20,20">
+            <TextBlock Name="description" TextWrapping="Wrap" Margin="25,20,25,150">
                 Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor
             </TextBlock>
         </StackPanel>

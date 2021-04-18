@@ -16,6 +16,10 @@
             <TextBlock HorizontalAlignment="Center" FontWeight="Bold">Описание эксперимента</TextBlock>
             <TextBox Name="description" TextWrapping="Wrap" AcceptsReturn="True" Margin="20,20,20,20">
                 Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor
+                Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor
+                Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor
+                Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor
+                Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor
             </TextBox>
         </StackPanel>
 
@@ -27,6 +31,8 @@
                     <RowDefinition Height="30"></RowDefinition>
                     <RowDefinition Height="30"></RowDefinition>
                     <RowDefinition Height="30"></RowDefinition>
+                    <RowDefinition Height="50"></RowDefinition>
+                    <RowDefinition Height="60"></RowDefinition>
                     <RowDefinition Height="30"></RowDefinition>
                 </Grid.RowDefinitions>
 
@@ -39,10 +45,11 @@
                 <TextBlock Grid.Row="2" VerticalAlignment="Center">Обратная связь</TextBlock>
                 <CheckBox Grid.Row="2" Name="isFeedbackNeeded" VerticalAlignment="Center" Margin="110,0,0,0"></CheckBox>
 
-                <Button Grid.Row="3" Content="Выбрать файл с заданиями" Height="25" Width="170" HorizontalAlignment="Left" Margin="0,0,0,2" VerticalAlignment="Center" Click="ChoosePuzzleFile"></Button>
-                <TextBlock TextWrapping="Wrap" Name="FileName" Grid.Row="3" VerticalAlignment="Center" Margin="180,0,0,0">Файл не выбран</TextBlock>
+                <Button Grid.Row="4" Content="Выбрать файл с заданиями" Height="25" Width="180" HorizontalAlignment="Left" Margin="0,0,0,2" VerticalAlignment="Center" Click="ChoosePuzzleFile"></Button>
 
-                <Button Grid.Row="5" Content="Начать тестирование" Height="25" Width="150" Click="StartTest"></Button>
+                <TextBlock Grid.Row="5" TextWrapping="Wrap" Name="FileName" HorizontalAlignment="Left" VerticalAlignment="Center" >Файл не выбран</TextBlock>
+
+                <Button Grid.Row="6" Content="Начать тестирование" Height="25" Width="150" Click="StartTest"></Button>
             </Grid>
         </StackPanel>
     </Grid>

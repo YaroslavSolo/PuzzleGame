@@ -4,7 +4,7 @@ using System.Text;
 
 namespace PuzzleInterpretation
 {
-    class Operator
+    public class Operator
     {
         /// <summary>
         /// It's complicated :/

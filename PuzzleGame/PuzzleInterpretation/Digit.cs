@@ -14,6 +14,11 @@ namespace PuzzleInterpretation
         /// </summary>
         private bool[] m = new bool[7];
 
+        public Digit(int state)
+        {
+            SetDigitState(state);
+        }
+
         public bool this[int i]
         {
             get

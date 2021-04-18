@@ -14,8 +14,8 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Text.RegularExpressions;
 using Microsoft.Win32;
-
-using DataAnalysis;
+using FileReading;
+using PuzzleInterpretation;
 
 namespace PuzzleGame
 {
@@ -24,6 +24,8 @@ namespace PuzzleGame
     /// </summary>
     public partial class MainWindow : Window
     {
+        private TestingParameters parameters = new TestingParameters();
+
         public MainWindow()
         {
             InitializeComponent();
@@ -37,20 +39,24 @@ namespace PuzzleGame
 
         private void StartTest(object sender, RoutedEventArgs e)
         {
+            if (parameters.Puzzles.Count == 0)
+            {
+                MessageBox.Show("Задания не были загружены, так как файл не был выбран или содержит ошибки", "Ошибка");
+                return;
+            }
+
             if (attemptDuration.Text != "" && numAttempts.Text != "")
             {
-                TestingParameters parameters = new TestingParameters();
-
                 parameters.AttemptDuration = int.Parse(attemptDuration.Text);
                 parameters.NumAttempts = int.Parse(numAttempts.Text);
                 parameters.Description = description.Text;
-                parameters.FeedbackIsNeeded = isFeedbackNeeded.IsEnabled;
+                parameters.IsFeedbackNeeded = isFeedbackNeeded.IsEnabled;
 
                 Content = new ParticipantForm(parameters);
             }
             else
             {
-                MessageBox.Show("Заданы не все параметры эксперимента");
+                MessageBox.Show("Заданы не все параметры эксперимента", "Ошибка");
             }
         }
 
@@ -60,6 +66,15 @@ namespace PuzzleGame
             if (openFileDialog.ShowDialog() == true)
             {
                 FileName.Text = openFileDialog.FileName;
+                var rawPuzzles = FileStreams.readCsvFile(openFileDialog.FileName);
+                List<MatchesPuzzle> puzzles = new List<MatchesPuzzle>();
+
+                foreach (var puzzle in rawPuzzles)
+                {
+                    puzzles.Add(new MatchesPuzzle(puzzle));
+                }
+
+                parameters.Puzzles = puzzles;
             }
         }
     }

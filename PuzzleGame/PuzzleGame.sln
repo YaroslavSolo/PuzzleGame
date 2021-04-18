@@ -7,8 +7,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PuzzleGame", "PuzzleGame\Pu
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataAnalysis", "DataAnalysis\DataAnalysis.csproj", "{9D7E2BCD-06F3-46C0-A9D0-AA010D3522D6}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PuzzleInterpretation", "PuzzleInterpretation\PuzzleInterpretation.csproj", "{A2970A26-95BF-48F1-ACB9-4E5420928603}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FileReading", "FileReading\FileReading.csproj", "{4C67DE64-EE0E-4C74-BD58-9A800F41CCA6}"
 EndProject
 Global
@@ -25,10 +23,6 @@ Global
 		{9D7E2BCD-06F3-46C0-A9D0-AA010D3522D6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9D7E2BCD-06F3-46C0-A9D0-AA010D3522D6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9D7E2BCD-06F3-46C0-A9D0-AA010D3522D6}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A2970A26-95BF-48F1-ACB9-4E5420928603}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A2970A26-95BF-48F1-ACB9-4E5420928603}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A2970A26-95BF-48F1-ACB9-4E5420928603}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A2970A26-95BF-48F1-ACB9-4E5420928603}.Release|Any CPU.Build.0 = Release|Any CPU
 		{4C67DE64-EE0E-4C74-BD58-9A800F41CCA6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{4C67DE64-EE0E-4C74-BD58-9A800F41CCA6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4C67DE64-EE0E-4C74-BD58-9A800F41CCA6}.Release|Any CPU.ActiveCfg = Release|Any CPU

@@ -12,7 +12,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\DataAnalysis\DataAnalysis.csproj" />
-    <ProjectReference Include="..\PuzzleInterpretation\PuzzleInterpretation.csproj" />
+    <ProjectReference Include="..\FileReading\FileReading.csproj" />
   </ItemGroup>
 
 </Project>

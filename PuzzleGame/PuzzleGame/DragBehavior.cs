@@ -1,8 +1,10 @@
 ﻿using Microsoft.Xaml.Behaviors;
 using System;
 using System.Collections.Generic;
+using System.Reflection;
 using System.Text;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Media;
 
 namespace PuzzleGame
@@ -11,41 +13,79 @@ namespace PuzzleGame
     {
         private Point elementStartPosition;
         private Point mouseStartPosition;
-        private TranslateTransform translate = new TranslateTransform();
-        private RotateTransform rotate;
         private Point trueTranslate;
+        private RotateTransform rotate = new RotateTransform(90);
+        private TranslateTransform translate = new TranslateTransform();    
         private TransformGroup group = new TransformGroup();
+
+        public bool Horizontal
+        {
+            get
+            {
+                foreach (var el in group.Children)
+                {
+                    if (el is RotateTransform)
+                        return true;
+                }
+
+                return false;
+            }
+        }
+
+        public void FireEvent(object onMe, string invokeMe, params object[] eventParams)
+        {
+            TypeInfo typeInfo = onMe.GetType().GetTypeInfo();
+            FieldInfo fieldInfo = typeInfo.GetDeclaredField(invokeMe);
+            MulticastDelegate eventDelagate = (MulticastDelegate)fieldInfo.GetValue(onMe);
+
+            Delegate[] delegates = eventDelagate.GetInvocationList();
+
+            foreach (Delegate dlg in delegates)
+            {
+                dlg.GetMethodInfo().Invoke(dlg.Target, eventParams);
+            }
+
+            //FireEvent(AssociatedObject, "MouseLeftButtonDown", null, EventArgs.Empty);
+        }
 
         protected override void OnAttached()
         {
             Window parent = Application.Current.MainWindow;
+            group.Children.Add(AssociatedObject.RenderTransform);
             AssociatedObject.RenderTransform = group;
             AssociatedObject.RenderTransformOrigin = new Point(0.5, 0.5);
             group.Children.Add(translate);
 
             AssociatedObject.MouseLeftButtonDown += (sender, e) =>
             {
-                if (e.ClickCount == 2)
+                if (e == EventArgs.Empty || e.ClickCount == 2)
                 {
-                    if (group.Children.Contains(rotate))
+                    if (Horizontal)
                     {
-                        group.Children.Remove(rotate);
+                        foreach (var el in group.Children)
+                        {
+                            if (el is RotateTransform)
+                            {
+                                group.Children.Remove(el);
+                                break;
+                            }
+                        }
+
                         translate.X = trueTranslate.X;
                         translate.Y = trueTranslate.Y;
                     }
                     else
-                    {
-                        rotate = new RotateTransform(90);                    
+                    {                     
                         rotate.CenterX = elementStartPosition.X;
                         rotate.CenterY = elementStartPosition.Y;
                         group.Children.Add(rotate);
-                    }                                                           
+                    }
                 }
                 else
                 {
                     mouseStartPosition = parent.PointToScreen(e.GetPosition(parent));
                     AssociatedObject.CaptureMouse();
-                }
+                }  
             };
 
             AssociatedObject.MouseLeftButtonUp += (sender, e) =>
@@ -61,7 +101,7 @@ namespace PuzzleGame
                 Vector diff = (parentPos - mouseStartPosition);
                 if (AssociatedObject.IsMouseCaptured)
                 {
-                    if (group.Children.Contains(rotate))
+                    if (Horizontal)
                     {
                         translate.X = elementStartPosition.X + diff.Y / 1.25;
                         translate.Y = elementStartPosition.Y - diff.X / 1.25;
