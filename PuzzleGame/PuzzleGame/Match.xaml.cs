@@ -10,6 +10,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using PuzzleInterpretation;
 
 namespace PuzzleGame
 {
@@ -18,25 +19,12 @@ namespace PuzzleGame
     /// </summary>
     public partial class Match : UserControl
     {
-        public Match()
-        {
-            InitializeComponent();      
-        }
+        private MatchesPuzzle Puzzle { get; set; }
 
-        public bool Horizontal
+        public Match(MatchesPuzzle puzzle)
         {
-            get
-            {
-                return (bool)GetValue(HorizontalProperty);
-            }
-            set
-            {
-                SetValue(HorizontalProperty, value);     
-                
-            }
+            InitializeComponent();
+            Puzzle = puzzle;
         }
-
-        public static readonly DependencyProperty HorizontalProperty =
-            DependencyProperty.Register("Horizontal", typeof(bool), typeof(Match), new PropertyMetadata(false));
     }
 }

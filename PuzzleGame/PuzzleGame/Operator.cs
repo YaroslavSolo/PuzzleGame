@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Shapes;
 using PuzzleGame;
-using System.Linq;
 
 namespace PuzzleInterpretation
 {
@@ -67,6 +65,7 @@ namespace PuzzleInterpretation
 
         public void Render(Panel canvas, List<Match> allMatches, int x, int y)
         {
+            TransformGroup group = null;
             RotateTransform rotate = new RotateTransform(90);
             Match slot1 = new Match();
             Match slot2 = new Match();
@@ -74,27 +73,33 @@ namespace PuzzleInterpretation
             switch (RepresentedOperator())
             {
                 case '=':
-                    Canvas.SetLeft(slot1, x);
-                    Canvas.SetTop(slot1, 25 + y);
+                    Canvas.SetLeft(slot1, -55 + x);
+                    Canvas.SetTop(slot1, -20 + y);
 
-                    Canvas.SetLeft(slot2, x);
-                    Canvas.SetTop(slot2, 65 + y);
-                    slot1.RenderTransform = rotate;
-                    slot2.RenderTransform = rotate;
+                    Canvas.SetLeft(slot2, -55 + x);
+                    Canvas.SetTop(slot2, 20 + y);
+
+                    group = (TransformGroup)slot1.RenderTransform;
+                    group.Children.Add(rotate);
+                    group = (TransformGroup)slot2.RenderTransform;
+                    group.Children.Add(rotate);
+
                     canvas.Children.Add(slot2);
                     break;
                 case '-':
-                    Canvas.SetLeft(slot1, x);
-                    Canvas.SetTop(slot1, 45 + y);
-                    slot1.RenderTransform = rotate;
+                    Canvas.SetLeft(slot1, -55 + x);
+                    Canvas.SetTop(slot1, y);
+                    group = (TransformGroup)slot1.RenderTransform;
+                    group.Children.Add(rotate);
                     break;
                 case '+':
-                    Canvas.SetLeft(slot1, x);
-                    Canvas.SetTop(slot1, 45 + y);
+                    Canvas.SetLeft(slot1, -55 + x);
+                    Canvas.SetTop(slot1, y);
 
-                    Canvas.SetLeft(slot2, -55 + x);
+                    Canvas.SetLeft(slot2, x);
                     Canvas.SetTop(slot2, y);
-                    slot1.RenderTransform = rotate;
+                    group = (TransformGroup)slot1.RenderTransform;
+                    group.Children.Add(rotate);
                     canvas.Children.Add(slot2);
                     break;
             }

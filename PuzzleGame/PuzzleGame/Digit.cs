@@ -20,6 +20,8 @@ namespace PuzzleInterpretation
         /// </summary>
         private bool[] m = new bool[7];
 
+        private Slot[] digitSlots = new Slot[7];
+
         public Digit(int digit)
         {
             SetDigitState(digit);
@@ -29,16 +31,8 @@ namespace PuzzleInterpretation
         {
             RotateTransform rotate = new RotateTransform(90);
 
-            Rectangle[] digitSlots = new Rectangle[7];
             for (int i = 0; i < digitSlots.Length; ++i)
-            {
-                digitSlots[i] = new Rectangle
-                {
-                    Width = 10,
-                    Height = 100,
-                    Fill = Brushes.LightGray
-                };
-            }
+                digitSlots[i] = new Slot();
 
             Canvas.SetLeft(digitSlots[0], 115 + x);
             Canvas.SetTop(digitSlots[0], 245 + y);
@@ -85,9 +79,10 @@ namespace PuzzleInterpretation
 
             if (m[0])
             {
-                Canvas.SetLeft(matches[cur], 115 + x);
-                Canvas.SetTop(matches[cur], 245 + y);
-                matches[cur].RenderTransform = rotate;
+                Canvas.SetLeft(matches[cur], 60 + x);
+                Canvas.SetTop(matches[cur], 200 + y);
+                TransformGroup group = (TransformGroup)matches[cur].RenderTransform;
+                group.Children.Add(rotate);
                 ++cur;
             }
             if (m[1])
@@ -98,9 +93,10 @@ namespace PuzzleInterpretation
             }
             if (m[2])
             {
-                Canvas.SetLeft(matches[cur], 115 + x);
-                Canvas.SetTop(matches[cur], 125 + y);
-                matches[cur].RenderTransform = rotate;
+                Canvas.SetLeft(matches[cur], 60 + x);
+                Canvas.SetTop(matches[cur], 80 + y);
+                TransformGroup group = (TransformGroup)matches[cur].RenderTransform;
+                group.Children.Add(rotate);
                 ++cur;
             }
             if (m[3])
@@ -111,9 +107,10 @@ namespace PuzzleInterpretation
             }
             if (m[4])
             {
-                Canvas.SetLeft(matches[cur], 115 + x);
-                Canvas.SetTop(matches[cur], 5 + y);
-                matches[cur].RenderTransform = rotate;
+                Canvas.SetLeft(matches[cur], 60 + x);
+                Canvas.SetTop(matches[cur], -40 + y);
+                TransformGroup group = (TransformGroup)matches[cur].RenderTransform;
+                group.Children.Add(rotate);
                 ++cur;
             }
             if (m[5])
