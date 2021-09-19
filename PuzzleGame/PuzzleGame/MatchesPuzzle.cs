@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 using System.Windows.Controls;
 using PuzzleGame;
 
@@ -10,11 +8,13 @@ namespace PuzzleInterpretation
     {
         private Digit[] digits = new Digit[3];
 
-        private Operator firstOp = new Operator();
+        private Operator firstOp;
 
-        private Operator secondOp = new Operator();
+        private Operator secondOp;
 
         private string answer;
+
+        const double ATTACH_DIST = 20;
 
         public int AttemptsLeft { get; set; }
 
@@ -49,21 +49,38 @@ namespace PuzzleInterpretation
 
         public MatchesPuzzle(KeyValuePair<KeyValuePair<string, string>, int> rawPuzzle)
         {
+
+            firstOp = new Operator(this, 2);
+            secondOp = new Operator(this, 4);
+
             string task = rawPuzzle.Key.Key;
             answer = rawPuzzle.Key.Value;
 
             MaxMatchesMoved = rawPuzzle.Value;
-            digits[0] = new Digit(task[0] - '0');
+            digits[0] = new Digit(task[0] - '0', this, 1);
             firstOp.SetState(task[1]);
-            digits[1] = new Digit(task[2] - '0');
+            digits[1] = new Digit(task[2] - '0', this, 3);
             secondOp.SetState(task[3]);
-            digits[2] = new Digit(task[4] - '0');
+            digits[2] = new Digit(task[4] - '0', this, 5);
+        }
+
+        public void AttachToSlot(Match match)
+        {
+             
+            digits[0].AttachIfPossible(match, ATTACH_DIST);
+            digits[1].AttachIfPossible(match, ATTACH_DIST);
+            digits[2].AttachIfPossible(match, ATTACH_DIST);
+            firstOp.AttachIfPossible(match, ATTACH_DIST);
+            secondOp.AttachIfPossible(match, ATTACH_DIST);
         }
 
         public bool IsSolved
         {
             get
             {
+                firstOp.UpdateState();
+                secondOp.UpdateState();
+
                 return digits[0].RepresentedDigit() == answer[0] &&
                     digits[1].RepresentedDigit() == answer[2] &&
                     digits[2].RepresentedDigit() == answer[4] &&

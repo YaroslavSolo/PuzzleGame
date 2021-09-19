@@ -40,8 +40,11 @@ namespace PuzzleGame
             trueTranslate.X = translate.X;
             trueTranslate.Y = translate.Y;
 
+            Match match = (Match)AssociatedObject;
+
             AssociatedObject.MouseLeftButtonDown += (sender, e) =>
             {
+                match.Slot.ContentMatch = null;
                 if (e.ClickCount == 2)
                 {
                     if (Horizontal)
@@ -59,16 +62,19 @@ namespace PuzzleGame
                         translate.Y = trueTranslate.Y;
                     }
                     else
-                    {                     
+                    {
                         rotate.CenterX = translate.X;
                         rotate.CenterY = translate.Y;
                         group.Children.Add(rotate);
                     }
+                    match.Horizontal = !match.Horizontal;
+                    // call rotate
                 }
                 else
                 {
                     mouseStartPosition = parent.PointToScreen(e.GetPosition(parent));
                     AssociatedObject.CaptureMouse();
+                    // call pick
                 }  
             };
 
@@ -79,17 +85,15 @@ namespace PuzzleGame
                 elementStartPosition.Y = translate.Y;
                 trueStartPosition.X = trueTranslate.X;
                 trueStartPosition.Y = trueTranslate.Y;
-                if (AssociatedObject is Match)
-                {
-                    Match m = (Match)AssociatedObject;
-                }
+                match.AttachToSlot();
+                // call drop
             };
 
             AssociatedObject.MouseMove += (sender, e) =>
             {
                 var parentPos = parent.PointToScreen(e.GetPosition(parent));
                 Vector diff = (parentPos - mouseStartPosition);
-                if (AssociatedObject.IsMouseCaptured )
+                if (AssociatedObject.IsMouseCaptured)
                 {
                     if (Horizontal)
                     {

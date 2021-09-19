@@ -19,21 +19,11 @@ namespace PuzzleGame
     {
         public Match ContentMatch { get; set; }
 
-        public bool Horizontal
-        {
-            get
-            {
-                return RenderTransform != MatrixTransform.Identity;
-            }
+        public double X { get; set; }
 
-            set
-            {
-                if (value)
-                    RenderTransform = new RotateTransform(90);
-                else
-                    RenderTransform = MatrixTransform.Identity;
-            }
-        }
+        public double Y { get; set; }
+
+        public bool Horizontal { get; set; }
 
         public bool Occupied
         {
@@ -41,6 +31,12 @@ namespace PuzzleGame
             {
                 return ContentMatch != null;
             }
+        }
+
+        public void SetCoordinates(double x, double y)
+        {
+            X = x;
+            Y = y;
         }
 
         public Slot()
