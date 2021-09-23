@@ -50,7 +50,7 @@ namespace PuzzleGame
                 parameters.AttemptDuration = int.Parse(attemptDuration.Text);
                 parameters.NumAttempts = int.Parse(numAttempts.Text);
                 parameters.Description = description.Text;
-                parameters.IsFeedbackNeeded = isFeedbackNeeded.IsEnabled;
+                parameters.IsFeedbackNeeded = isFeedbackNeeded.IsChecked.Value;
 
                 Content = new ParticipantForm(parameters);
             }

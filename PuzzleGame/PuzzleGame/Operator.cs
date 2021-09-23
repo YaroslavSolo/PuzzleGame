@@ -10,101 +10,132 @@ namespace PuzzleInterpretation
     public class Operator
     {
         /// <summary>
-        /// It's complicated :/
+        /// 
         /// </summary>
         private bool[] m = new bool[4];
 
-        public void RenderSlots(Panel canvas, int x, int y)
+        public readonly Slot[] opSlots = new Slot[4];
+
+        private MatchesPuzzle puzzle;
+
+        private int symbolNum;
+
+        public Operator(MatchesPuzzle puzzle, int symbolNum)
         {
-            RotateTransform rotate = new RotateTransform(90);
+            this.puzzle = puzzle;
+            this.symbolNum = symbolNum;
+        }
 
-            Rectangle slot1 = new Rectangle
+        public void PlaceSlot(Slot slot, int x, int y, bool horizontal = false)
+        {
+            Canvas.SetLeft(slot, x);
+            Canvas.SetTop(slot, y);
+            slot.SetCoordinates(x, y);
+            if (horizontal)
             {
-                Width = 10,
-                Height = 100,
-                Fill = Brushes.LightGray
-            };
+                RotateTransform rotate = new RotateTransform(90);
+                slot.RenderTransform = rotate;
+                slot.Horizontal = true;
+            }
+        }
 
-            Rectangle slot2 = new Rectangle
+        public void PlaceMatch(Match match, int x, int y, bool horizontal = false)
+        {
+            Canvas.SetLeft(match, x);
+            Canvas.SetTop(match, y);
+            match.SetCoordinates(x, y);
+            if (horizontal)
             {
-                Width = 10,
-                Height = 100,
-                Fill = Brushes.LightGray
-            };
+                RotateTransform rotate = new RotateTransform(90);
+                TransformGroup group = (TransformGroup)match.RenderTransform;
+                group.Children.Add(rotate);
+                match.Horizontal = true;
+            }
+        }
 
-            switch (RepresentedOperator())
+        public bool AttachIfPossible(Match m, double attachDist)
+        {
+            foreach (Slot slot in opSlots)
             {
-                case '=':
-                    Canvas.SetLeft(slot1, x);
-                    Canvas.SetTop(slot1, 25 + y);
-
-                    Canvas.SetLeft(slot2, x);
-                    Canvas.SetTop(slot2, 65 + y);
-                    slot1.RenderTransform = rotate;
-                    slot2.RenderTransform = rotate;
-                    canvas.Children.Add(slot2);
-                    break;
-                case '-':
-                    Canvas.SetLeft(slot1, x);
-                    Canvas.SetTop(slot1, 45 + y);
-                    slot1.RenderTransform = rotate;
-                    break;
-                case '+':
-                    Canvas.SetLeft(slot1, x);
-                    Canvas.SetTop(slot1, 45 + y);
-
-                    Canvas.SetLeft(slot2, -55 + x);
-                    Canvas.SetTop(slot2, y);
-                    slot1.RenderTransform = rotate;
-                    canvas.Children.Add(slot2);
-                    break;
+                if (!slot.Occupied && m.Horizontal == slot.Horizontal && m.Dist(slot) <= attachDist)
+                {
+                    System.Diagnostics.Trace.WriteLine(m.Dist(slot));
+                    slot.ContentMatch = m;
+                    m.Slot.ContentMatch = null;
+                    m.Slot = slot;
+                    m.GetOffset().X += slot.X - m.RealX;
+                    m.GetOffset().Y += slot.Y - m.RealY;
+                    return true;
+                }
             }
 
-            canvas.Children.Add(slot1);
+            return false;
+        }
+
+        public void RenderSlots(Panel canvas, int x, int y)
+        {
+            for (int i = 0; i < opSlots.Length; ++i)
+            {
+                opSlots[i] = new Slot();
+                //opSlots[i].Visibility = System.Windows.Visibility.Hidden;  // uncomment on release
+            }
+                
+            PlaceSlot(opSlots[0], -55 + x, y);
+            PlaceSlot(opSlots[1], x, 65 + y, true);
+            PlaceSlot(opSlots[2], x, 45 + y, true);
+            PlaceSlot(opSlots[3], x, 25 + y, true);
+
+            foreach (var slot in opSlots)
+            {
+                canvas.Children.Add(slot);
+            }
         }
 
         public void Render(Panel canvas, List<Match> allMatches, int x, int y)
         {
-            TransformGroup group = null;
-            RotateTransform rotate = new RotateTransform(90);
-            Match slot1 = new Match();
-            Match slot2 = new Match();
+            Match match1 = new Match(puzzle, symbolNum, 1);
+            Match match2 = new Match(puzzle, symbolNum, 2);
 
             switch (RepresentedOperator())
             {
                 case '=':
-                    Canvas.SetLeft(slot1, -55 + x);
-                    Canvas.SetTop(slot1, -20 + y);
+                    PlaceMatch(match2, -55 + x, -20 + y, true);
+                    opSlots[3].ContentMatch = match2;
+                    match2.Slot = opSlots[3];
 
-                    Canvas.SetLeft(slot2, -55 + x);
-                    Canvas.SetTop(slot2, 20 + y);
+                    PlaceMatch(match1, -55 + x, 20 + y, true);
+                    opSlots[1].ContentMatch = match1;
+                    match1.Slot = opSlots[1];
 
-                    group = (TransformGroup)slot1.RenderTransform;
-                    group.Children.Add(rotate);
-                    group = (TransformGroup)slot2.RenderTransform;
-                    group.Children.Add(rotate);
-
-                    canvas.Children.Add(slot2);
+                    canvas.Children.Add(match2);
                     break;
                 case '-':
-                    Canvas.SetLeft(slot1, -55 + x);
-                    Canvas.SetTop(slot1, y);
-                    group = (TransformGroup)slot1.RenderTransform;
-                    group.Children.Add(rotate);
+                    PlaceMatch(match1, -55 + x, y, true);
+                    opSlots[2].ContentMatch = match1;
+                    match1.Slot = opSlots[2];
                     break;
                 case '+':
-                    Canvas.SetLeft(slot1, -55 + x);
-                    Canvas.SetTop(slot1, y);
+                    PlaceMatch(match1, -55 + x, y, true);
+                    opSlots[2].ContentMatch = match1;
+                    match1.Slot = opSlots[2];
 
-                    Canvas.SetLeft(slot2, x);
-                    Canvas.SetTop(slot2, y);
-                    group = (TransformGroup)slot1.RenderTransform;
-                    group.Children.Add(rotate);
-                    canvas.Children.Add(slot2);
+                    PlaceMatch(match2, x, y);
+                    opSlots[0].ContentMatch = match2;
+                    match2.Slot = opSlots[0];
+
+                    canvas.Children.Add(match2);
                     break;
             }
 
-            canvas.Children.Add(slot1);
+            canvas.Children.Add(match1);
+        }
+
+        public void UpdateState()
+        {
+            for (int i = 0; i < 4; ++i)
+            {
+                m[i] = opSlots[i].Occupied;
+            }
         }
 
         public char RepresentedOperator()

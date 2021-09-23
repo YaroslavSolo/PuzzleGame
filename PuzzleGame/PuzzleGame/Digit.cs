@@ -20,43 +20,79 @@ namespace PuzzleInterpretation
         /// </summary>
         private bool[] m = new bool[7];
 
-        private Slot[] digitSlots = new Slot[7];
+        public readonly Slot[] digitSlots = new Slot[7];
 
-        public Digit(int digit)
+        private Match[] matches;
+         
+        private MatchesPuzzle puzzle;
+
+        private int symbolNum;
+
+        public Digit(int digit, MatchesPuzzle puzzle, int symbolNum)
         {
+            this.puzzle = puzzle;
+            this.symbolNum = symbolNum;
             SetDigitState(digit);
+        }
+
+        public void PlaceSlot(Slot slot, int x, int y, bool horizontal = false)
+        {
+            Canvas.SetLeft(slot, x);
+            Canvas.SetTop(slot, y);
+            slot.SetCoordinates(x, y);
+            if (horizontal)
+            {
+                RotateTransform rotate = new RotateTransform(90);
+                slot.RenderTransform = rotate;
+                slot.Horizontal = true;
+            }
+        }
+
+        public void PlaceMatch(Match match, int x, int y, bool horizontal = false)
+        {
+            Canvas.SetLeft(match, x);
+            Canvas.SetTop(match, y);
+            match.SetCoordinates(x, y);
+            if (horizontal)
+            {
+                RotateTransform rotate = new RotateTransform(90);
+                TransformGroup group = (TransformGroup)match.RenderTransform;
+                group.Children.Add(rotate);
+                match.Horizontal = true;
+            }
+        }
+
+        public bool AttachIfPossible(Match m, double attachDist)
+        {
+            foreach (Slot slot in digitSlots)
+            {          
+                if (!slot.Occupied && m.Horizontal == slot.Horizontal && m.Dist(slot) <= attachDist)
+                {
+                    System.Diagnostics.Trace.WriteLine(m.Dist(slot));
+                    slot.ContentMatch = m;
+                    m.Slot.ContentMatch = null;
+                    m.Slot = slot;
+                    m.GetOffset().X += slot.X - m.RealX;
+                    m.GetOffset().Y += slot.Y - m.RealY;
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         public void RenderSlots(Panel canvas, int x, int y)
         {
-            RotateTransform rotate = new RotateTransform(90);
-
             for (int i = 0; i < digitSlots.Length; ++i)
                 digitSlots[i] = new Slot();
 
-            Canvas.SetLeft(digitSlots[0], 115 + x);
-            Canvas.SetTop(digitSlots[0], 245 + y);
-            digitSlots[0].RenderTransform = rotate;
-
-            Canvas.SetLeft(digitSlots[1], x);
-            Canvas.SetTop(digitSlots[1], 140 + y);
-
-            Canvas.SetLeft(digitSlots[2], 115 + x);
-            Canvas.SetTop(digitSlots[2], 125 + y);
-            digitSlots[2].RenderTransform = rotate;
-
-            Canvas.SetLeft(digitSlots[3], x);
-            Canvas.SetTop(digitSlots[3], 20 + y);
-
-            Canvas.SetLeft(digitSlots[4], 115 + x);
-            Canvas.SetTop(digitSlots[4], 5 + y);
-            digitSlots[4].RenderTransform = rotate;
-
-            Canvas.SetLeft(digitSlots[5], 120 + x);
-            Canvas.SetTop(digitSlots[5], 20 + y);
-
-            Canvas.SetLeft(digitSlots[6], 120 + x);
-            Canvas.SetTop(digitSlots[6], 140 + y);
+            PlaceSlot(digitSlots[0], 115 + x, 245 + y, true);
+            PlaceSlot(digitSlots[1], x, 140 + y);
+            PlaceSlot(digitSlots[2], 115 + x, 125 + y, true);
+            PlaceSlot(digitSlots[3], x, 20 + y);
+            PlaceSlot(digitSlots[4], 115 + x, 5 + y, true);
+            PlaceSlot(digitSlots[5], 120 + x, 20 + y);
+            PlaceSlot(digitSlots[6], 120 + x, 140 + y);
 
             foreach (var slot in digitSlots)
             {
@@ -66,64 +102,67 @@ namespace PuzzleInterpretation
 
         public void Render(Panel canvas, List<Match> allMatches, int x, int y)
         {
-            Match[] matches = new Match[MatchesNeeded];
+            matches = new Match[MatchesNeeded];
             for (int i = 0; i < MatchesNeeded; ++i)
-                matches[i] = new Match();
+                matches[i] = new Match(puzzle, symbolNum);
 
-            RotateTransform rotate = new RotateTransform(90);
             int cur = 0;
 
             foreach (var match in matches)
+            {
                 canvas.Children.Add(match);
+            }
+               
             allMatches.AddRange(matches);
 
             if (m[0])
             {
-                Canvas.SetLeft(matches[cur], 60 + x);
-                Canvas.SetTop(matches[cur], 200 + y);
-                TransformGroup group = (TransformGroup)matches[cur].RenderTransform;
-                group.Children.Add(rotate);
-                ++cur;
+                PlaceMatch(matches[cur], 60 + x, 200 + y, true);
+                matches[cur].Slot = digitSlots[0];
+                matches[cur].MatchNum = 0;
+                digitSlots[0].ContentMatch = matches[cur++];
             }
             if (m[1])
             {
-                Canvas.SetLeft(matches[cur], x);
-                Canvas.SetTop(matches[cur], 140 + y);
-                ++cur;
+                PlaceMatch(matches[cur], x, 140 + y);
+                matches[cur].Slot = digitSlots[1];
+                matches[cur].MatchNum = 1;
+                digitSlots[1].ContentMatch = matches[cur++];
             }
             if (m[2])
             {
-                Canvas.SetLeft(matches[cur], 60 + x);
-                Canvas.SetTop(matches[cur], 80 + y);
-                TransformGroup group = (TransformGroup)matches[cur].RenderTransform;
-                group.Children.Add(rotate);
-                ++cur;
+                PlaceMatch(matches[cur], 60 + x, 80 + y, true);
+                matches[cur].Slot = digitSlots[2];
+                matches[cur].MatchNum = 2;
+                digitSlots[2].ContentMatch = matches[cur++];
             }
             if (m[3])
             {
-                Canvas.SetLeft(matches[cur], x);
-                Canvas.SetTop(matches[cur], 20 + y);
-                ++cur;
+                PlaceMatch(matches[cur], x, 20 + y);
+                matches[cur].Slot = digitSlots[3];
+                matches[cur].MatchNum = 3;
+                digitSlots[3].ContentMatch = matches[cur++];
             }
             if (m[4])
             {
-                Canvas.SetLeft(matches[cur], 60 + x);
-                Canvas.SetTop(matches[cur], -40 + y);
-                TransformGroup group = (TransformGroup)matches[cur].RenderTransform;
-                group.Children.Add(rotate);
-                ++cur;
+                PlaceMatch(matches[cur], 60 + x, -40 + y, true);
+                matches[cur].Slot = digitSlots[4];
+                matches[cur].MatchNum = 4;
+                digitSlots[4].ContentMatch = matches[cur++];
             }
             if (m[5])
             {
-                Canvas.SetLeft(matches[cur], 120 + x);
-                Canvas.SetTop(matches[cur], 20 + y);
-                ++cur;
+                PlaceMatch(matches[cur], 120 + x, 20 + y);
+                matches[cur].Slot = digitSlots[5];
+                matches[cur].MatchNum = 5;
+                digitSlots[5].ContentMatch = matches[cur++];
             }
             if (m[6])
             {
-                Canvas.SetLeft(matches[cur], 120 + x);
-                Canvas.SetTop(matches[cur], 140 + y);
-                ++cur;
+                PlaceMatch(matches[cur], 120 + x, 140 + y);
+                matches[cur].Slot = digitSlots[6];
+                matches[cur].MatchNum = 6;
+                digitSlots[6].ContentMatch = matches[cur++];
             }
         }
         
@@ -159,6 +198,11 @@ namespace PuzzleInterpretation
         /// <returns>Represented digit, -1 if the state doesn't correspond to any digit</returns>
         public int RepresentedDigit()
         {
+            for (int i = 0; i < 7; ++i)
+            {
+                m[i] = digitSlots[i].Occupied;
+            }
+
             bool[] conditions = new bool[10];
 
             conditions[0] = m[0] && m[1] && m[3] && m[4] && m[5] && m[6] && !(m[2]);
