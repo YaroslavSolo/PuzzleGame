@@ -24,11 +24,20 @@ namespace PuzzleGame
 
         public double Y { get; set; }
 
+        public double TrueOffsetX { get; set; }
+
+        public double TrueOffsetY { get; set; }
+
         public double RealX
         {
             get
             {
-                return X + GetOffset().X;
+                if (Horizontal)
+                {
+                    return X + TrueOffsetX;
+                }
+                else
+                    return X + GetOffset().X;
             }
         }
 
@@ -36,7 +45,12 @@ namespace PuzzleGame
         {
             get
             {
-                return Y + GetOffset().Y;
+                if (Horizontal)
+                {
+                    return Y + TrueOffsetY;
+                }
+                else
+                    return Y + GetOffset().Y;
             }
         }
 

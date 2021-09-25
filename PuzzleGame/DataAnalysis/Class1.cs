@@ -1,5 +1,5 @@
 ﻿using System;
-using FileReading;
+//using FileReading;
 
 namespace DataAnalysis
 {
@@ -16,7 +16,7 @@ namespace DataAnalysis
 
         public static void DataConsmer(DateTime time, int x, int y, string obj)
         {
-            FileStreams.writeToFile("../../../working_result.txt", "" + time.ToFileTime() + ":" + x + ":" + y + ":" + obj + ";");
+            //FileStreams.writeToFile("../../../working_result.txt", "" + time.ToFileTime() + ":" + x + ":" + y + ":" + obj + ";");
         }
     }
 }

@@ -14,7 +14,7 @@ namespace PuzzleInterpretation
 
         private string answer;
 
-        const double ATTACH_DIST = 20;
+        const double ATTACH_DIST = 15;
 
         public int AttemptsLeft { get; set; }
 

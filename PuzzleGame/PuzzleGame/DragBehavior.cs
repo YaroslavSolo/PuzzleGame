@@ -85,7 +85,11 @@ namespace PuzzleGame
                 elementStartPosition.Y = translate.Y;
                 trueStartPosition.X = trueTranslate.X;
                 trueStartPosition.Y = trueTranslate.Y;
+                match.TrueOffsetX = trueTranslate.X;
+                match.TrueOffsetY = trueTranslate.Y;
+                System.Diagnostics.Trace.WriteLine((int)(match.X + match.RealX) + "; " + (int)(match.Y + match.RealY));
                 match.AttachToSlot();
+                System.Diagnostics.Trace.WriteLine((int)(match.X + match.RealX) + "; " + (int)(match.Y + match.RealY));
                 // call drop
             };
 

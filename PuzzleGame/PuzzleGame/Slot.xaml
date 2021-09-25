@@ -8,6 +8,6 @@
              mc:Ignorable="d" 
              Height="100" Width="10">
 
-    <Rectangle Height="100" Stroke="Black" Fill="LightGray" Width="10">
+    <Rectangle Height="100" Stroke="LightGray" Fill="LightGray" Width="10">
     </Rectangle>
 </UserControl>

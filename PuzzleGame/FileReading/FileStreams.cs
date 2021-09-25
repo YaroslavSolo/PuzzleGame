@@ -138,7 +138,7 @@ namespace FileReading
             }
             catch (ArgumentNullException e)
             {
-                if (isread)
+                //if (isread)
                     throw new CSVException(" because you give null or incorrect string instead task or result in file", e);
                 throw new CSVException(" because you give null or incorrect string instead path", e);
             }
@@ -178,7 +178,7 @@ namespace FileReading
             {
                 throw new CSVException(str + "Unknown exception", e);
             }
-            return null;
+           // return null;
         }
 
     }
