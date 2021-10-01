@@ -39,7 +39,10 @@ namespace PuzzleInterpretation
         {
             Canvas.SetLeft(slot, x);
             Canvas.SetTop(slot, y);
-            slot.SetCoordinates(x, y);
+            if (horizontal)
+                slot.SetCoordinates(x - 50, y - 50);
+            else
+                slot.SetCoordinates(x, y);
             if (horizontal)
             {
                 RotateTransform rotate = new RotateTransform(90);
@@ -65,10 +68,11 @@ namespace PuzzleInterpretation
         public bool AttachIfPossible(Match m, double attachDist)
         {
             foreach (Slot slot in digitSlots)
-            {          
-                if (!slot.Occupied && m.Horizontal == slot.Horizontal && m.Dist(slot) <= attachDist)
-                {
+            {
+                if (!slot.Occupied && m.Horizontal == slot.Horizontal && m.Dist(slot) <= 100)
                     System.Diagnostics.Trace.WriteLine(m.Dist(slot));
+                if (!slot.Occupied && m.Horizontal == slot.Horizontal && m.Dist(slot) <= attachDist)
+                {                
                     slot.ContentMatch = m;
                     m.Slot.ContentMatch = null;
                     m.Slot = slot;

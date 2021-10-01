@@ -245,6 +245,7 @@ namespace FileReading
             {
                 throw new CSVException(str + "Unknown exception", e);
             }
+
             return;
         }
 
