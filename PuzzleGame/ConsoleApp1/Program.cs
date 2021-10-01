@@ -9,20 +9,39 @@ namespace ConsoleApp1
     {
         public static void Main()
         {
-            try
+            //try
             {
                 Console.Write("Please inpet path to data file: ");
                 string s = Console.ReadLine();
+                //Console.Write("|" + s + "|");
+                if (s.Length == 0)
+                {
+                    s = "../../../working_result.txt";
+                }
+                Console.Write("Please inpet path to result file: ");
+                string sr = Console.ReadLine();
+                if(sr.Length == 0)
+                {
+                    sr = "../../../result.csv";
+                }
                 List<DataReader.Probe> probes = DataReader.ReadAndParse(s);
                 for (int i = 0; i < probes.Count; ++i)
                 {
-                    Console.WriteLine("Test number " + i + "\n" + probes[i].ToString() + "\n\n");
+                    //Console.WriteLine("Test number " + i + "\n" + probes[i].ToString() + "\n\n");
+                    FileReading.FileStreams.writeToFile(sr, "" + (i+1) + "," + probes[i].ToStringCSV() + "\n");
                 }
             }
+<<<<<<< HEAD
             catch(Exception e)
             {
                 Console.WriteLine("Program ends with some problem" + e.Message);
             }
+=======
+            //catch(Exception e)
+            //{
+            //    Console.WriteLine("Program ends with some problem: " + e.Message);
+            //}
+>>>>>>> b8da75006530a796845a0a9a4cb57dd6d1b252ef
         }
     }
 }

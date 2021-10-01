@@ -4,13 +4,13 @@ using System.Collections.Generic;
 
 namespace DataAnalysis
 {
-    public class DataWriter
+    public class Datawriter
     {
         public delegate void DataConsumerDelegate(string type, DateTime time, int x, int y, string obj);
 
         public static DataConsumerDelegate dataDel;
 
-        static DataWriter()
+        static Datawriter()
         {
             dataDel = DataConsumer;
         }
@@ -100,14 +100,16 @@ namespace DataAnalysis
 
         public class Probe
         {
+            public string name_attemp = "";
             public List<long> pauses = new List<long>();
             public List<long> moves = new List<long>();
+            public long totaltime = 0;
             //public List<int> returnes = new List<int>();
             public Dictionary<string, MovableObject> obj = new Dictionary<string, MovableObject>();
 
             public override string ToString()
             {
-                string s = "";
+                string s = "" + name_attemp;
                 long lsum = 0;
                 int isum = 0;
                 s += "Pauses: \n";
@@ -135,6 +137,71 @@ namespace DataAnalysis
 
                 return s;
             }
+
+
+            public string ToStringCSV()
+            {
+                string s = "" + name_attemp + ",";
+                long lsum = 0;
+                int isum = 0;
+                //s += "Pauses: \n";
+                foreach (long i in pauses)
+                {
+                    lsum += i;
+                    //s += "" + i + ", ";
+                }
+                //s += "\nTotal Sum: " + lsum + "\n";
+                s += "" + lsum + ",";
+                lsum = 0;
+                //s += "Moves: \n";
+                foreach (long i in moves)
+                {
+                    lsum += i;
+                    //s += "" + i + ", ";
+                }
+                //s += "\nTotal Sum: " + lsum + "\n";
+                s += "" + lsum + ",";
+                s += "" + pauses.Count + "," + moves.Count + ",";
+                //s += "returnes for each object: \n";
+                List<MovableObject> valList = new List<MovableObject>(obj.Values);
+                valList.Sort((a, b) => { return a.name.CompareTo(b.name); });
+                string ids = "";
+                foreach (MovableObject i in valList)
+                {
+                    //s += "\t" + i.name + ": " + i.ret_to_start_pos + "\n";
+                    //s += "" + i.name + ": " + i.ret_to_start_pos + ",";
+                    isum += i.ret_to_start_pos;
+                    ids += "" + i.name;
+                }
+                //s += "Total Sum: " + isum + "\n";
+                s += "" + isum + ",";
+                s += "" + pauses[0] + ",";
+                var lenum = obj.Values.GetEnumerator();
+                if (lenum.MoveNext()) {
+                    s += "" + lenum.Current.name + ",";
+                }
+                s += ids + ",";
+                s += "" + totaltime + ",";
+
+                return s;
+
+
+                /*
+
+    1) Продолжительность пауз между передвижением монеток/спичек в мс
+    2) Длительность передвижений монеток/спичек в мс
+    3) Количество пауз на пробу
+    4) Количество шагов (передвижений монеток/спичек) на пробу
+    5) Количество возвратов монеток/спичек на пробу (когда монетку/спичку перемещают с её места и возвращают обратно)
+    6) Длительность паузы до первого шага в пробе в мс
+    7) ID монетки/спички взятой первой в пробе
+    8) ID монеток/спичек, перемещаемых за пробу
+    9) Общее время пробы в мс
+    10) Общее время решения задачи в с
+    11) Номер пробы на испытуемого, в которой он впервые передвинул спичку/монетку связанную с решением
+
+                */
+            }
         }
 
         public static List<Probe> ReadAndParse(string path)
@@ -148,7 +215,7 @@ namespace DataAnalysis
                     string[] res = s.Split(':');
                     if (res[0] == "Probe_start")
                     {
-                        if (history.Count != 0 || history[history.Count - 1].type != EventTypes.Probe_end)
+                        if (history.Count != 0 || history.Count > 0 && history[history.Count - 1].type != EventTypes.Probe_end)
                         {
                             throw new FormatException("Broken data!");
                         }
@@ -228,11 +295,14 @@ namespace DataAnalysis
                     case EventTypes.Probe_start:
                         {
                             probes.Add(new Probe());
+                            probes[probes.Count - 1].name_attemp = history[i].obj;
+                            probes[probes.Count - 1].totaltime = -history[i].time;
                             break;
                         }
                     case EventTypes.Probe_end:
                         {
                             probes[probes.Count - 1].pauses.Add(history[i].time - history[i - 1].time);
+                            probes[probes.Count - 1].totaltime += history[i].time;
                             foreach (MovableObject k in probes[probes.Count - 1].obj.Values)
                             {
                                 for (int j = 1; j < k.pos.Count; ++j)
