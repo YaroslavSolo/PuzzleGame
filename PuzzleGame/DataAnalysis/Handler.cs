@@ -4,13 +4,13 @@ using System.Collections.Generic;
 
 namespace DataAnalysis
 {
-    public class DataWriter
+    public class Datawriter
     {
         public delegate void DataConsumerDelegate(string type, DateTime time, int x, int y, string obj);
 
         public static DataConsumerDelegate dataDel;
 
-        static DataWriter()
+        static Datawriter()
         {
             dataDel = DataConsmer;
         }
