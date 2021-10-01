@@ -14,23 +14,23 @@ namespace PuzzleInterpretation
 
         private string answer;
 
-        const double ATTACH_DIST = 15;
+        const double ATTACH_DIST = 18;
 
         public int AttemptsLeft { get; set; }
 
         public int TimeLeft { get; set; }
 
-        public int MatchesMoved { get; set; }
+        public int MatchesToMove { get; private set; }
 
-        public int MaxMatchesMoved { get; set; }
+        public int MatchesToMoveLeft { get; set; }
 
         public List<Match> matches = new List<Match>();
 
-        public void RenderSlots(Panel canvas, int x, int y)
+        public void RenderSlots(Panel canvas, int x, int y, bool areSlotsVisible)
         {
-            digits[0].RenderSlots(canvas, x, y);
-            digits[1].RenderSlots(canvas, 300 + x, y);
-            digits[2].RenderSlots(canvas, 600 + x, y);
+            digits[0].RenderSlots(canvas, x, y, areSlotsVisible);
+            digits[1].RenderSlots(canvas, 300 + x, y, areSlotsVisible);
+            digits[2].RenderSlots(canvas, 600 + x, y, areSlotsVisible);
 
             firstOp.RenderSlots(canvas, 265 + x, 80 + y);
             secondOp.RenderSlots(canvas, 565 + x, 80 + y);
@@ -49,14 +49,14 @@ namespace PuzzleInterpretation
 
         public MatchesPuzzle(KeyValuePair<KeyValuePair<string, string>, int> rawPuzzle)
         {
-
             firstOp = new Operator(this, 2);
             secondOp = new Operator(this, 4);
 
             string task = rawPuzzle.Key.Key;
             answer = rawPuzzle.Key.Value;
 
-            MaxMatchesMoved = rawPuzzle.Value;
+            MatchesToMove = rawPuzzle.Value;
+            MatchesToMoveLeft = rawPuzzle.Value;
             digits[0] = new Digit(task[0] - '0', this, 1);
             firstOp.SetState(task[1]);
             digits[1] = new Digit(task[2] - '0', this, 3);
@@ -66,7 +66,12 @@ namespace PuzzleInterpretation
 
         public void AttachToSlot(Match match)
         {
-             
+            if (!match.WasMoved)
+            {
+                --MatchesToMoveLeft;
+                match.WasMoved = true;
+            }
+
             digits[0].AttachIfPossible(match, ATTACH_DIST);
             digits[1].AttachIfPossible(match, ATTACH_DIST);
             digits[2].AttachIfPossible(match, ATTACH_DIST);

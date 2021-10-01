@@ -2,6 +2,7 @@
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using DataAnalysis;
 
 namespace PuzzleGame
 {
@@ -75,6 +76,7 @@ namespace PuzzleGame
                     mouseStartPosition = parent.PointToScreen(e.GetPosition(parent));
                     AssociatedObject.CaptureMouse();
                     // call pick
+                    DataWriter.DataConsumer("Object_get", System.DateTime.Now, (int)trueTranslate.X, (int)trueTranslate.Y, match.Id);
                 }  
             };
 
@@ -91,6 +93,7 @@ namespace PuzzleGame
                 match.AttachToSlot();
                 System.Diagnostics.Trace.WriteLine((int)(match.X + match.RealX) + "; " + (int)(match.Y + match.RealY));
                 // call drop
+                DataWriter.DataConsumer("Object_loose", System.DateTime.Now, (int)trueTranslate.X, (int)trueTranslate.Y, match.Id);
             };
 
             AssociatedObject.MouseMove += (sender, e) =>

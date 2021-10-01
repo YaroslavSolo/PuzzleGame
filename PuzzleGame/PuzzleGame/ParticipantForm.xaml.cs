@@ -28,10 +28,15 @@ namespace PuzzleGame
             description.Text = parameters.Description;
         }
 
+        private void LengthValidationTextBox(object sender, TextCompositionEventArgs e)
+        {
+            e.Handled = nickNameTextBox.Text.Length > 25;
+        }
+
         private void NumberValidationTextBox(object sender, TextCompositionEventArgs e)
         {
             Regex regex = new Regex("[^0-9]+");
-            e.Handled = regex.IsMatch(e.Text);
+            e.Handled = regex.IsMatch(e.Text) || numericTextBox.Text.Length > 2;
         }
 
         private void ShowExample(object sender, RoutedEventArgs e)

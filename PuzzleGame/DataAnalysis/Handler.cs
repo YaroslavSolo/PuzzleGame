@@ -12,12 +12,12 @@ namespace DataAnalysis
 
         static DataWriter()
         {
-            dataDel = DataConsmer;
+            dataDel = DataConsumer;
         }
 
-        public static void DataConsmer(string type, DateTime time, int x, int y, string obj)
+        public static void DataConsumer(string type, DateTime time, int x, int y, string objId)
         {
-            FileStreams.writeToFile("../../../working_result.txt", "" + type + ":" + ((DateTimeOffset)time).ToUnixTimeMilliseconds() + ":" + x + ":" + y + ":" + obj + ";");
+            FileStreams.writeToFile("../../../working_result.txt", "" + type + ":" + ((DateTimeOffset)time).ToUnixTimeMilliseconds() + ":" + x + ":" + y + ":" + objId + ";");
         }
     }
 

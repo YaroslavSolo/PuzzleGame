@@ -21,7 +21,7 @@ namespace ConsoleApp1
             }
             catch(Exception e)
             {
-                Console.WriteLine("Program ends with some problem" + e.Message());
+                Console.WriteLine("Program ends with some problem" + e.Message);
             }
         }
     }

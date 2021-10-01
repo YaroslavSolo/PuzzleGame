@@ -19,9 +19,9 @@
                 Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor
             </TextBlock>
         </StackPanel>
-        
+
         <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
-            <Grid>
+            <Grid Width="278">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="30"></RowDefinition>
                     <RowDefinition Height="30"></RowDefinition>
@@ -32,19 +32,19 @@
                 </Grid.RowDefinitions>
 
                 <TextBlock Grid.Row="0" MinWidth="220" VerticalAlignment="Center">Никнейм:</TextBlock>
-                <TextBox  Grid.Row="0" HorizontalAlignment="Right" VerticalAlignment="Center" Width="150" Height="20"/>
+                <TextBox Grid.Row="1" Name="nickNameTextBox" PreviewTextInput="LengthValidationTextBox" HorizontalAlignment="Left" VerticalAlignment="Center" Width="270" Height="20"/>
 
-                <TextBlock Grid.Row="1" VerticalAlignment="Center">Возраст, лет:</TextBlock>
-                <TextBox Grid.Row="1" Name="NumericTextBox" PreviewTextInput="NumberValidationTextBox" HorizontalAlignment="Right" VerticalAlignment="Center" Width="30" Height="20"/>
+                <TextBlock Grid.Row="2" VerticalAlignment="Center">Возраст, лет:</TextBlock>
+                <TextBox Grid.Row="2" Name="numericTextBox" PreviewTextInput="NumberValidationTextBox" HorizontalAlignment="Left" VerticalAlignment="Center" Width="28" Height="20" Margin="90,0,0,0"/>
 
-                <StackPanel Grid.Row="2" Orientation="Horizontal">
-                    <TextBlock Grid.Row="2" VerticalAlignment="Center">Пол:</TextBlock>
-                    <TextBlock Grid.Row="2" VerticalAlignment="Center" Margin="10,0,0,0">М</TextBlock>
-                    <RadioButton Grid.Row="2" VerticalAlignment="Center" Margin="1,0,0,0"></RadioButton>
-                    <TextBlock Grid.Row="2" VerticalAlignment="Center" Margin="10,0,0,0">Ж</TextBlock>
-                    <RadioButton Grid.Row="2" VerticalAlignment="Center" Margin="1,0,0,0"></RadioButton>
+                <StackPanel Grid.Row="3" Orientation="Horizontal">
+                    <TextBlock VerticalAlignment="Center">Пол:</TextBlock>
+                    <TextBlock VerticalAlignment="Center" Margin="10,0,0,0">М</TextBlock>
+                    <RadioButton VerticalAlignment="Center" Margin="1,0,0,0"></RadioButton>
+                    <TextBlock VerticalAlignment="Center" Margin="10,0,0,0">Ж</TextBlock>
+                    <RadioButton VerticalAlignment="Center" Margin="1,0,0,0"></RadioButton>
                 </StackPanel>
-          
+
                 <Button Grid.Row="5" Content="Далее" Height="25" Width="150" Click="ShowExample"></Button>
             </Grid>
         </StackPanel>

@@ -71,6 +71,8 @@ namespace PuzzleGame
 
         public bool Horizontal { get; set; }
 
+        public bool WasMoved { get; set; }
+
         private MatchesPuzzle Puzzle { get; set; }
 
         public Slot Slot { get; set; }

@@ -1,17 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using System.Text.RegularExpressions;
 using Microsoft.Win32;
 using FileReading;
@@ -31,10 +20,16 @@ namespace PuzzleGame
             InitializeComponent();
         }
 
-        private void NumberValidationTextBox(object sender, TextCompositionEventArgs e)
+        private void NumberValidationTextBox1(object sender, TextCompositionEventArgs e)
         {
             Regex regex = new Regex("[^0-9]+");
-            e.Handled = regex.IsMatch(e.Text);
+            e.Handled = regex.IsMatch(e.Text) || attemptDuration.Text.Length > 3;
+        }
+
+        private void NumberValidationTextBox2(object sender, TextCompositionEventArgs e)
+        {
+            Regex regex = new Regex("[^0-9]+");
+            e.Handled = regex.IsMatch(e.Text) || numAttempts.Text.Length > 2;
         }
 
         private void StartTest(object sender, RoutedEventArgs e)
@@ -51,6 +46,7 @@ namespace PuzzleGame
                 parameters.NumAttempts = int.Parse(numAttempts.Text);
                 parameters.Description = description.Text;
                 parameters.IsFeedbackNeeded = isFeedbackNeeded.IsChecked.Value;
+                parameters.AreSlotsVisible = areSlotsVisible.IsChecked.Value;
 
                 Content = new ParticipantForm(parameters);
             }

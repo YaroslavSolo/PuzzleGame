@@ -33,6 +33,9 @@ namespace PuzzleInterpretation
             this.puzzle = puzzle;
             this.symbolNum = symbolNum;
             SetDigitState(digit);
+
+            for (int i = 0; i < digitSlots.Length; ++i)
+                digitSlots[i] = new Slot();   
         }
 
         public void PlaceSlot(Slot slot, int x, int y, bool horizontal = false)
@@ -85,10 +88,11 @@ namespace PuzzleInterpretation
             return false;
         }
 
-        public void RenderSlots(Panel canvas, int x, int y)
+        public void RenderSlots(Panel canvas, int x, int y, bool areSlotsVisible)
         {
-            for (int i = 0; i < digitSlots.Length; ++i)
-                digitSlots[i] = new Slot();
+            if (!areSlotsVisible)
+                foreach (Slot slot in digitSlots)
+                    slot.Visibility = System.Windows.Visibility.Hidden;
 
             PlaceSlot(digitSlots[0], 115 + x, 245 + y, true);
             PlaceSlot(digitSlots[1], x, 140 + y);
@@ -99,9 +103,7 @@ namespace PuzzleInterpretation
             PlaceSlot(digitSlots[6], 120 + x, 140 + y);
 
             foreach (var slot in digitSlots)
-            {
                 canvas.Children.Add(slot);
-            }
         }
 
         public void Render(Panel canvas, List<Match> allMatches, int x, int y)
@@ -113,9 +115,7 @@ namespace PuzzleInterpretation
             int cur = 0;
 
             foreach (var match in matches)
-            {
                 canvas.Children.Add(match);
-            }
                
             allMatches.AddRange(matches);
 
@@ -178,24 +178,6 @@ namespace PuzzleInterpretation
             }
         }
 
-        public bool this[int i]
-        {
-            get
-            {
-                if (i >= 0 && i < 8)
-                    return m[i];
-                else
-                    throw new ArgumentOutOfRangeException("Position number should be between 0 and 7.");
-            }
-            set
-            {
-                if (i >= 0 && i < 8)
-                    m[i] = value;
-                else
-                    throw new ArgumentOutOfRangeException("Position number should be between 0 and 7.");
-            }
-        }
-
         /// <summary>
         /// State to digit mapper
         /// </summary>
@@ -203,9 +185,7 @@ namespace PuzzleInterpretation
         public int RepresentedDigit()
         {
             for (int i = 0; i < 7; ++i)
-            {
                 m[i] = digitSlots[i].Occupied;
-            }
 
             bool[] conditions = new bool[10];
 

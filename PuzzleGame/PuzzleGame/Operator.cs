@@ -80,7 +80,7 @@ namespace PuzzleInterpretation
             for (int i = 0; i < opSlots.Length; ++i)
             {
                 opSlots[i] = new Slot();
-                opSlots[i].Visibility = System.Windows.Visibility.Hidden;  // uncomment on release
+                //opSlots[i].Visibility = System.Windows.Visibility.Hidden;  // uncomment on release
             }
                 
             PlaceSlot(opSlots[0], -55 + x, y);
