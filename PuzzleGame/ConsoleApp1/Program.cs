@@ -28,7 +28,7 @@ namespace ConsoleApp1
                 for (int i = 0; i < probes.Count; ++i)
                 {
                     //Console.WriteLine("Test number " + i + "\n" + probes[i].ToString() + "\n\n");
-                    FileReading.FileStreams.writeToFile(sr, "" + i + "," + probes[i].ToStringCSV() + "\n");
+                    FileReading.FileStreams.writeToFile(sr, "" + (i+1) + "," + probes[i].ToStringCSV() + "\n");
                 }
             }
             //catch(Exception e)
