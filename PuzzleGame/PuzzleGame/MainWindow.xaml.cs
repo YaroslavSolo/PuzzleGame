@@ -65,10 +65,15 @@ namespace PuzzleGame
                 var rawPuzzles = FileStreams.readCsvFile(openFileDialog.FileName);
                 List<MatchesPuzzle> puzzles = new List<MatchesPuzzle>();
 
-                foreach (var puzzle in rawPuzzles)
+                try
                 {
-                    puzzles.Add(new MatchesPuzzle(puzzle));
+                    foreach (var puzzle in rawPuzzles)
+                    {
+                        puzzles.Add(new MatchesPuzzle(puzzle));
+                    }
                 }
+                catch
+                {}
 
                 parameters.Puzzles = puzzles;
             }

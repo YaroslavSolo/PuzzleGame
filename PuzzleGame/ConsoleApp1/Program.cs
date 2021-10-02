@@ -31,17 +31,11 @@ namespace ConsoleApp1
                     FileReading.FileStreams.writeToFile(sr, "" + (i+1) + "," + probes[i].ToStringCSV() + "\n");
                 }
             }
-<<<<<<< HEAD
-            catch(Exception e)
-            {
-                Console.WriteLine("Program ends with some problem" + e.Message);
-            }
-=======
+
             //catch(Exception e)
             //{
             //    Console.WriteLine("Program ends with some problem: " + e.Message);
             //}
->>>>>>> b8da75006530a796845a0a9a4cb57dd6d1b252ef
         }
     }
 }

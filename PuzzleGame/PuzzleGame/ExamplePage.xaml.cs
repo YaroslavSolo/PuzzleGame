@@ -38,12 +38,12 @@ namespace PuzzleGame
 
             timer.Interval = new TimeSpan(0, 0, 1);
             timer.Tick += new EventHandler(GameTick);
-
+            timer.Start();
             puzzles[curPuzzle].RenderSlots(canvas, 20, 40, TestingParams.AreSlotsVisible);
             puzzles[curPuzzle].Render(canvas, 20, 40);
         }
 
-        void GameTick(object sender, EventArgs e)
+        private void GameTick(object sender, EventArgs e)
         {
             if (--puzzles[curPuzzle].TimeLeft > 0)
             {
@@ -83,7 +83,7 @@ namespace PuzzleGame
 
         private void NextPuzzle()
         {
-            DataWriter.DataConsumer("Probe_start", System.DateTime.Now, 0, 0, "");
+            Datawriter.DataConsumer("Probe_start", System.DateTime.Now, 0, 0, "");
 
             timer.Stop();
             if (TestingParams.IsFeedbackNeeded)

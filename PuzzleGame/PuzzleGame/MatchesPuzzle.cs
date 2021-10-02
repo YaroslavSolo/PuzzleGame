@@ -14,7 +14,9 @@ namespace PuzzleInterpretation
 
         private string answer;
 
-        const double ATTACH_DIST = 18;
+        private const double ATTACH_DIST = 18;
+
+        public List<Match> matches = new List<Match>();
 
         public int AttemptsLeft { get; set; }
 
@@ -24,7 +26,37 @@ namespace PuzzleInterpretation
 
         public int MatchesToMoveLeft { get; set; }
 
-        public List<Match> matches = new List<Match>();
+        public bool IsSolved
+        {
+            get
+            {
+                firstOp.UpdateState();
+                secondOp.UpdateState();
+
+                return digits[0].RepresentedDigit() == answer[0] &&
+                    digits[1].RepresentedDigit() == answer[2] &&
+                    digits[2].RepresentedDigit() == answer[4] &&
+                    firstOp.RepresentedOperator() == answer[1] &&
+                    secondOp.RepresentedOperator() == answer[3];
+            }
+        }
+
+        public MatchesPuzzle(KeyValuePair<KeyValuePair<string, string>, int> rawPuzzle)
+        {
+            firstOp = new Operator(this, 2);
+            secondOp = new Operator(this, 4);
+
+            string task = rawPuzzle.Key.Key;
+            answer = rawPuzzle.Key.Value;
+
+            MatchesToMove = rawPuzzle.Value;
+            MatchesToMoveLeft = rawPuzzle.Value;
+            digits[0] = new Digit(task[0] - '0', this, 1);
+            firstOp.SetState(task[1]);
+            digits[1] = new Digit(task[2] - '0', this, 3);
+            secondOp.SetState(task[3]);
+            digits[2] = new Digit(task[4] - '0', this, 5);
+        }
 
         public void RenderSlots(Panel canvas, int x, int y, bool areSlotsVisible)
         {
@@ -47,23 +79,6 @@ namespace PuzzleInterpretation
             secondOp.Render(canvas, matches, 565 + x, 80 + y);
         }
 
-        public MatchesPuzzle(KeyValuePair<KeyValuePair<string, string>, int> rawPuzzle)
-        {
-            firstOp = new Operator(this, 2);
-            secondOp = new Operator(this, 4);
-
-            string task = rawPuzzle.Key.Key;
-            answer = rawPuzzle.Key.Value;
-
-            MatchesToMove = rawPuzzle.Value;
-            MatchesToMoveLeft = rawPuzzle.Value;
-            digits[0] = new Digit(task[0] - '0', this, 1);
-            firstOp.SetState(task[1]);
-            digits[1] = new Digit(task[2] - '0', this, 3);
-            secondOp.SetState(task[3]);
-            digits[2] = new Digit(task[4] - '0', this, 5);
-        }
-
         public void AttachToSlot(Match match)
         {
             if (!match.WasMoved)
@@ -77,21 +92,6 @@ namespace PuzzleInterpretation
             digits[2].AttachIfPossible(match, ATTACH_DIST);
             firstOp.AttachIfPossible(match, ATTACH_DIST);
             secondOp.AttachIfPossible(match, ATTACH_DIST);
-        }
-
-        public bool IsSolved
-        {
-            get
-            {
-                firstOp.UpdateState();
-                secondOp.UpdateState();
-
-                return digits[0].RepresentedDigit() == answer[0] &&
-                    digits[1].RepresentedDigit() == answer[2] &&
-                    digits[2].RepresentedDigit() == answer[4] &&
-                    firstOp.RepresentedOperator() == answer[1] &&
-                    secondOp.RepresentedOperator() == answer[3];
-            }
         }
     }
 }

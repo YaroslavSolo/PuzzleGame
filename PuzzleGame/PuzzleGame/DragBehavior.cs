@@ -45,6 +45,8 @@ namespace PuzzleGame
 
             AssociatedObject.MouseLeftButtonDown += (sender, e) =>
             {
+                if (match.Puzzle.MatchesToMoveLeft < 1 && !match.WasMoved)
+                    return;
                 match.Slot.ContentMatch = null;
                 if (e.ClickCount == 2)
                 {
@@ -76,12 +78,14 @@ namespace PuzzleGame
                     mouseStartPosition = parent.PointToScreen(e.GetPosition(parent));
                     AssociatedObject.CaptureMouse();
                     // call pick
-                    DataWriter.DataConsumer("Object_get", System.DateTime.Now, (int)trueTranslate.X, (int)trueTranslate.Y, match.Id);
+                    Datawriter.DataConsumer("Object_get", System.DateTime.Now, (int)trueTranslate.X, (int)trueTranslate.Y, match.Id);
                 }  
             };
 
             AssociatedObject.MouseLeftButtonUp += (sender, e) =>
             {
+                if (match.Puzzle.MatchesToMoveLeft < 1 && !match.WasMoved)
+                    return;
                 AssociatedObject.ReleaseMouseCapture();
                 elementStartPosition.X = translate.X;
                 elementStartPosition.Y = translate.Y;
@@ -93,11 +97,13 @@ namespace PuzzleGame
                 match.AttachToSlot();
                 System.Diagnostics.Trace.WriteLine((int)(match.X + match.RealX) + "; " + (int)(match.Y + match.RealY));
                 // call drop
-                DataWriter.DataConsumer("Object_loose", System.DateTime.Now, (int)trueTranslate.X, (int)trueTranslate.Y, match.Id);
+                Datawriter.DataConsumer("Object_loose", System.DateTime.Now, (int)trueTranslate.X, (int)trueTranslate.Y, match.Id);
             };
 
             AssociatedObject.MouseMove += (sender, e) =>
             {
+                if (match.Puzzle.MatchesToMoveLeft < 1 && !match.WasMoved)
+                    return;
                 var parentPos = parent.PointToScreen(e.GetPosition(parent));
                 Vector diff = (parentPos - mouseStartPosition);
                 if (AssociatedObject.IsMouseCaptured)

@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Windows.Controls;
 using System.Windows.Media;
-using System.Windows.Shapes;
 using PuzzleGame;
 
 namespace PuzzleInterpretation
@@ -80,7 +79,7 @@ namespace PuzzleInterpretation
             for (int i = 0; i < opSlots.Length; ++i)
             {
                 opSlots[i] = new Slot();
-                //opSlots[i].Visibility = System.Windows.Visibility.Hidden;  // uncomment on release
+                opSlots[i].Visibility = System.Windows.Visibility.Hidden;  // uncomment on release
             }
                 
             PlaceSlot(opSlots[0], -55 + x, y);
@@ -122,7 +121,7 @@ namespace PuzzleInterpretation
                     opSlots[2].ContentMatch = match1;
                     match1.Slot = opSlots[2];
 
-                    PlaceMatch(match2, x, y);
+                    PlaceMatch(match2, -55 + x, y);
                     opSlots[0].ContentMatch = match2;
                     match2.Slot = opSlots[0];
 
