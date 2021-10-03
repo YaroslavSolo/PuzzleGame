@@ -1,0 +1,8 @@
+Probe_start:10000:10:10:ivan_1
+Object_get:10110:12:10:pen_1
+Object_loose:10120:14:50:pen_1
+Object_get:10130:22:30:pen_2
+Object_loose:10140:12:10:pen_2
+Object_get:10150:44:44:pen_3
+Object_loose:10155:44:44:pen_3
+Probe_end:10160:0:0:
