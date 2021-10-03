@@ -33,11 +33,11 @@ namespace PuzzleInterpretation
                 firstOp.UpdateState();
                 secondOp.UpdateState();
 
-                return digits[0].RepresentedDigit() == answer[0] &&
-                    digits[1].RepresentedDigit() == answer[2] &&
-                    digits[2].RepresentedDigit() == answer[4] &&
-                    firstOp.RepresentedOperator() == answer[1] &&
-                    secondOp.RepresentedOperator() == answer[3];
+                return (digits[0].RepresentedDigit() + '0') == answer[0] &&
+                       (digits[1].RepresentedDigit() + '0') == answer[2] &&
+                       (digits[2].RepresentedDigit() + '0') == answer[4] &&
+                       firstOp.RepresentedOperator() == answer[1] &&
+                       secondOp.RepresentedOperator() == answer[3];
             }
         }
 

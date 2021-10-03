@@ -19,7 +19,7 @@ namespace PuzzleInterpretation
         /// </summary>
         private bool[] m = new bool[7];
 
-        public readonly Slot[] digitSlots = new Slot[7];
+        public Slot[] digitSlots;
 
         private Match[] matches;
          
@@ -32,9 +32,6 @@ namespace PuzzleInterpretation
             this.puzzle = puzzle;
             this.symbolNum = symbolNum;
             SetDigitState(digit);
-
-            for (int i = 0; i < digitSlots.Length; ++i)
-                digitSlots[i] = new Slot();   
         }
 
         public void PlaceSlot(Slot slot, int x, int y, bool horizontal = false)
@@ -89,9 +86,13 @@ namespace PuzzleInterpretation
 
         public void RenderSlots(Panel canvas, int x, int y, bool areSlotsVisible)
         {
-            if (!areSlotsVisible)
-                foreach (Slot slot in digitSlots)
-                    slot.Visibility = System.Windows.Visibility.Hidden;
+            digitSlots = new Slot[7];
+            for (int i = 0; i < digitSlots.Length; ++i)
+            {
+                digitSlots[i] = new Slot();
+                if (!areSlotsVisible)
+                    digitSlots[i].Visibility = System.Windows.Visibility.Hidden;
+            }       
 
             PlaceSlot(digitSlots[0], 115 + x, 245 + y, true);
             PlaceSlot(digitSlots[1], x, 140 + y);
@@ -196,7 +197,7 @@ namespace PuzzleInterpretation
             conditions[5] = m[0] && m[2] && m[3] && m[4] && m[6] && !(m[1] || m[5]);
             conditions[6] = m[0] && m[1] && m[2] && m[3] && m[4] && m[6] && !(m[5]);
             conditions[7] = m[4] && m[5] && m[6] && !(m[0] || m[1] || m[2] || m[3]);
-            conditions[8] = Array.TrueForAll(m, (e) => true);
+            conditions[8] = m[0] && m[1] && m[2] && m[3] && m[4] && m[5] && m[6];
             conditions[9] = m[0] && m[2] && m[3] && m[4] && m[5] && m[6] && !(m[1]);
 
             for (int i = 0; i < conditions.Length; ++i)

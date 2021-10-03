@@ -38,9 +38,12 @@ namespace PuzzleGame
 
             timer.Interval = new TimeSpan(0, 0, 1);
             timer.Tick += new EventHandler(GameTick);
-            timer.Start();
+
             puzzles[curPuzzle].RenderSlots(canvas, 20, 40, TestingParams.AreSlotsVisible);
             puzzles[curPuzzle].Render(canvas, 20, 40);
+
+            timer.Start();
+            Datawriter.DataConsumer("Probe_start", System.DateTime.Now, 0, 0, "");
         }
 
         private void GameTick(object sender, EventArgs e)
@@ -54,6 +57,7 @@ namespace PuzzleGame
             {
                 timeLeft.Text = "0";
                 timer.Stop();
+                MessageBox.Show("Время на решения головоломки истекло", "Увы...", MessageBoxButton.OK, MessageBoxImage.Exclamation);
                 NextPuzzle();
             }
         }
@@ -83,15 +87,15 @@ namespace PuzzleGame
 
         private void NextPuzzle()
         {
-            Datawriter.DataConsumer("Probe_start", System.DateTime.Now, 0, 0, "");
+            Datawriter.DataConsumer("Probe_end", System.DateTime.Now, 0, 0, "");
 
             timer.Stop();
-            if (TestingParams.IsFeedbackNeeded)
+            if (TestingParams.IsFeedbackNeeded && timeLeft.Text != "0")
             {
                 if (puzzles[curPuzzle].IsSolved)
-                    MessageBox.Show("Задание решено верно", "Поздравляем!");
+                    MessageBox.Show("Задание решено верно", "Поздравляем!", MessageBoxButton.OK, MessageBoxImage.Asterisk);
                 else
-                    MessageBox.Show("Задание решено неверно", "Увы...");
+                    MessageBox.Show("Задание решено неверно", "Увы...", MessageBoxButton.OK, MessageBoxImage.Asterisk);
             }
 
             if (++curPuzzle < puzzles.Count)
@@ -102,6 +106,7 @@ namespace PuzzleGame
                 puzzles[curPuzzle].RenderSlots(canvas, 20, 40, TestingParams.AreSlotsVisible);
                 puzzles[curPuzzle].Render(canvas, 20, 40); 
                 timer.Start();
+                Datawriter.DataConsumer("Probe_start", System.DateTime.Now, 0, 0, "");
             }
             else
             {

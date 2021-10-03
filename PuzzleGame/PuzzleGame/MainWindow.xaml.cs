@@ -36,7 +36,8 @@ namespace PuzzleGame
         {
             if (parameters.Puzzles.Count == 0)
             {
-                MessageBox.Show("Задания не были загружены, так как файл не был выбран или содержит ошибки", "Ошибка");
+                MessageBox.Show("Задания не были загружены, так как файл не был выбран или содержит ошибки",
+                    "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
 
@@ -52,7 +53,7 @@ namespace PuzzleGame
             }
             else
             {
-                MessageBox.Show("Заданы не все параметры эксперимента", "Ошибка");
+                MessageBox.Show("Заданы не все параметры эксперимента", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 

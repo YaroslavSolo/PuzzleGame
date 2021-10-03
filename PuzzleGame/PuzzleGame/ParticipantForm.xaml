@@ -40,9 +40,9 @@
                 <StackPanel Grid.Row="3" Orientation="Horizontal">
                     <TextBlock VerticalAlignment="Center">Пол:</TextBlock>
                     <TextBlock VerticalAlignment="Center" Margin="10,0,0,0">М</TextBlock>
-                    <RadioButton VerticalAlignment="Center" Margin="1,0,0,0"></RadioButton>
+                    <RadioButton Name="maleRadioButton" VerticalAlignment="Center" Margin="1,0,0,0"></RadioButton>
                     <TextBlock VerticalAlignment="Center" Margin="10,0,0,0">Ж</TextBlock>
-                    <RadioButton VerticalAlignment="Center" Margin="1,0,0,0"></RadioButton>
+                    <RadioButton Name="femaleRadioButton" VerticalAlignment="Center" Margin="1,0,0,0"></RadioButton>
                 </StackPanel>
 
                 <Button Grid.Row="5" Content="Далее" Height="25" Width="150" Click="ShowExample"></Button>
