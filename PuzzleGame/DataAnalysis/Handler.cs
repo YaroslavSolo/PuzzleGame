@@ -4,20 +4,20 @@ using System.Collections.Generic;
 
 namespace DataAnalysis
 {
-    public class DataWriter
+    public class Datawriter
     {
         public delegate void DataConsumerDelegate(string type, DateTime time, int x, int y, string obj);
 
         public static DataConsumerDelegate dataDel;
 
-        static DataWriter()
+        static Datawriter()
         {
-            dataDel = DataConsmer;
+            dataDel = DataConsumer;
         }
 
-        public static void DataConsmer(string type, DateTime time, int x, int y, string obj)
+        public static void DataConsumer(string type, DateTime time, int x, int y, string objId)
         {
-            FileStreams.writeToFile("../../../working_result.txt", "" + type + ":" + ((DateTimeOffset)time).ToUnixTimeMilliseconds() + ":" + x + ":" + y + ":" + obj + "\n");
+            FileStreams.writeToFile("../../../../working_result.txt", "" + type + ":" + ((DateTimeOffset)time).ToUnixTimeMilliseconds() + ":" + x + ":" + y + ":" + obj + "\n");
         }
     }
 
@@ -270,7 +270,7 @@ namespace DataAnalysis
             }
 
             /*
-            
+
 1) Продолжительность пауз между передвижением монеток/спичек в мс
 2) Длительность передвижений монеток/спичек в мс
 3) Количество пауз на пробу
@@ -285,9 +285,9 @@ namespace DataAnalysis
 
             */
 
-            
+
             List<Probe> probes = new List<Probe>();
-            
+
             for(int i = 0; i < history.Count; ++i)
             {
                 switch(history[i].type)

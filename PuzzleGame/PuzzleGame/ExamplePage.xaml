@@ -23,6 +23,8 @@
             <TextBlock Margin="5,0,0,0">c</TextBlock>
             <Button Name="newAttempt" Margin="30,0,0,0" Click="NewAttempt">Новая попытка</Button>
             <Button Margin="30,0,0,0" Click="NextPuzzleClick">Следующее задание</Button>
+            <TextBlock HorizontalAlignment="Right" Margin="30,0,0,0">Осталось переместить спичек:</TextBlock>
+            <TextBlock Name="movesLeft" Margin="5,0,0,0">99</TextBlock>
         </StackPanel>
         <Canvas Name="canvas" Grid.Row="1">
             

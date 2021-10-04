@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Windows.Controls;
 using System.Windows.Media;
-using System.Windows.Shapes;
 using PuzzleGame;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,7 +19,7 @@ namespace PuzzleInterpretation
         /// </summary>
         private bool[] m = new bool[7];
 
-        public readonly Slot[] digitSlots = new Slot[7];
+        public Slot[] digitSlots;
 
         private Match[] matches;
          
@@ -85,10 +84,15 @@ namespace PuzzleInterpretation
             return false;
         }
 
-        public void RenderSlots(Panel canvas, int x, int y)
+        public void RenderSlots(Panel canvas, int x, int y, bool areSlotsVisible)
         {
+            digitSlots = new Slot[7];
             for (int i = 0; i < digitSlots.Length; ++i)
+            {
                 digitSlots[i] = new Slot();
+                if (!areSlotsVisible)
+                    digitSlots[i].Visibility = System.Windows.Visibility.Hidden;
+            }       
 
             PlaceSlot(digitSlots[0], 115 + x, 245 + y, true);
             PlaceSlot(digitSlots[1], x, 140 + y);
@@ -99,9 +103,7 @@ namespace PuzzleInterpretation
             PlaceSlot(digitSlots[6], 120 + x, 140 + y);
 
             foreach (var slot in digitSlots)
-            {
                 canvas.Children.Add(slot);
-            }
         }
 
         public void Render(Panel canvas, List<Match> allMatches, int x, int y)
@@ -113,9 +115,7 @@ namespace PuzzleInterpretation
             int cur = 0;
 
             foreach (var match in matches)
-            {
                 canvas.Children.Add(match);
-            }
                
             allMatches.AddRange(matches);
 
@@ -178,24 +178,6 @@ namespace PuzzleInterpretation
             }
         }
 
-        public bool this[int i]
-        {
-            get
-            {
-                if (i >= 0 && i < 8)
-                    return m[i];
-                else
-                    throw new ArgumentOutOfRangeException("Position number should be between 0 and 7.");
-            }
-            set
-            {
-                if (i >= 0 && i < 8)
-                    m[i] = value;
-                else
-                    throw new ArgumentOutOfRangeException("Position number should be between 0 and 7.");
-            }
-        }
-
         /// <summary>
         /// State to digit mapper
         /// </summary>
@@ -203,9 +185,7 @@ namespace PuzzleInterpretation
         public int RepresentedDigit()
         {
             for (int i = 0; i < 7; ++i)
-            {
                 m[i] = digitSlots[i].Occupied;
-            }
 
             bool[] conditions = new bool[10];
 
@@ -217,7 +197,7 @@ namespace PuzzleInterpretation
             conditions[5] = m[0] && m[2] && m[3] && m[4] && m[6] && !(m[1] || m[5]);
             conditions[6] = m[0] && m[1] && m[2] && m[3] && m[4] && m[6] && !(m[5]);
             conditions[7] = m[4] && m[5] && m[6] && !(m[0] || m[1] || m[2] || m[3]);
-            conditions[8] = Array.TrueForAll(m, (e) => true);
+            conditions[8] = m[0] && m[1] && m[2] && m[3] && m[4] && m[5] && m[6];
             conditions[9] = m[0] && m[2] && m[3] && m[4] && m[5] && m[6] && !(m[1]);
 
             for (int i = 0; i < conditions.Length; ++i)

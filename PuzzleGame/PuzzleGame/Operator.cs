@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Windows.Controls;
 using System.Windows.Media;
-using System.Windows.Shapes;
 using PuzzleGame;
 
 namespace PuzzleInterpretation
@@ -14,7 +13,7 @@ namespace PuzzleInterpretation
         /// </summary>
         private bool[] m = new bool[4];
 
-        public readonly Slot[] opSlots = new Slot[4];
+        public Slot[] opSlots;
 
         private MatchesPuzzle puzzle;
 
@@ -77,6 +76,7 @@ namespace PuzzleInterpretation
 
         public void RenderSlots(Panel canvas, int x, int y)
         {
+            opSlots = new Slot[4];
             for (int i = 0; i < opSlots.Length; ++i)
             {
                 opSlots[i] = new Slot();
@@ -122,7 +122,7 @@ namespace PuzzleInterpretation
                     opSlots[2].ContentMatch = match1;
                     match1.Slot = opSlots[2];
 
-                    PlaceMatch(match2, x, y);
+                    PlaceMatch(match2, -55 + x, y);
                     opSlots[0].ContentMatch = match2;
                     match2.Slot = opSlots[0];
 
@@ -145,16 +145,23 @@ namespace PuzzleInterpretation
         {
             bool[] conditions = new bool[3];
 
-            conditions[0] = m[0] && m[2] && !(m[1] || m[3]);    // =
-            conditions[1] = m[1] && !(m[2] || m[3] || m[0]);    // -
-            conditions[2] = m[1] && m[3] && !(m[2] || m[0]);    // +
+            conditions[0] = m[1] && m[3] && !(m[0] || m[2]);    // =
+            conditions[1] = m[2] && !(m[0] || m[1] || m[3]);    // -
+            conditions[2] = m[0] && m[2] && !(m[1] || m[3]);    // +
 
-            if (conditions[0])
-                return '=';
-            else if (conditions[1])
-                return '-';
-            else if (conditions[2])
+            int count = 0;
+            for (int i = 0; i < 4; ++i)
+            {
+                if (m[i])
+                    ++count;
+            }
+
+            if (conditions[2] || (count == 2 && m[0]))
                 return '+';
+            else if (conditions[0] || (count == 2 && !m[0]))
+                return '=';
+            else if (conditions[1] || (count == 1 && !m[0]))
+                return '-';
             else return ' ';
         }
 
@@ -162,18 +169,18 @@ namespace PuzzleInterpretation
         {
             if (ch == '=')
             {
-                m[0] = m[2] = true;
-                m[1] = m[3] = false;
+                m[1] = m[3] = true;
+                m[0] = m[2] = false;
             }
             else if (ch == '-')
             {
-                m[1] = true;
-                m[0] = m[2] = m[3] = false;
+                m[2] = true;
+                m[0] = m[1] = m[3] = false;
             }
             else if (ch == '+')
             {
-                m[1] = m[3] = true;
-                m[0] = m[2] = false;
+                m[0] = m[2] = true;
+                m[1] = m[3] = false;
             }
             else
             {

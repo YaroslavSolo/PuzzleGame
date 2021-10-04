@@ -1,17 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using PuzzleInterpretation;
 using System.Windows.Threading;
+using DataAnalysis;
 
 namespace PuzzleGame
 {
@@ -35,6 +28,7 @@ namespace PuzzleGame
             puzzles = TestingParams.Puzzles;
             numAttemptsLeft.Text = TestingParams.NumAttempts.ToString();
             timeLeft.Text = TestingParams.AttemptDuration.ToString();
+            movesLeft.Text = puzzles[curPuzzle].MatchesToMoveLeft.ToString();
 
             foreach (var puzzle in puzzles)
             {
@@ -45,20 +39,25 @@ namespace PuzzleGame
             timer.Interval = new TimeSpan(0, 0, 1);
             timer.Tick += new EventHandler(GameTick);
 
-            puzzles[curPuzzle].RenderSlots(canvas, 20, 40);
+            puzzles[curPuzzle].RenderSlots(canvas, 20, 40, TestingParams.AreSlotsVisible);
             puzzles[curPuzzle].Render(canvas, 20, 40);
+
+            timer.Start();
+            Datawriter.DataConsumer("Probe_start", System.DateTime.Now, 0, 0, "");
         }
 
-        void GameTick(object sender, EventArgs e)
+        private void GameTick(object sender, EventArgs e)
         {
             if (--puzzles[curPuzzle].TimeLeft > 0)
             {
                 timeLeft.Text = puzzles[curPuzzle].TimeLeft.ToString();
+                movesLeft.Text = puzzles[curPuzzle].MatchesToMoveLeft.ToString();
             }
             else
             {
                 timeLeft.Text = "0";
                 timer.Stop();
+                MessageBox.Show("Время на решения головоломки истекло", "Увы...", MessageBoxButton.OK, MessageBoxImage.Exclamation);
                 NextPuzzle();
             }
         }
@@ -66,10 +65,12 @@ namespace PuzzleGame
         private void NewAttempt(object sender, RoutedEventArgs e)
         {
             if (--puzzles[curPuzzle].AttemptsLeft > 0)
-            {           
+            {
+                puzzles[curPuzzle].MatchesToMoveLeft = puzzles[curPuzzle].MatchesToMove;
                 numAttemptsLeft.Text = puzzles[curPuzzle].AttemptsLeft.ToString();
+                movesLeft.Text = puzzles[curPuzzle].MatchesToMove.ToString();
                 canvas.Children.Clear();
-                puzzles[curPuzzle].RenderSlots(canvas, 20, 40);
+                puzzles[curPuzzle].RenderSlots(canvas, 20, 40, TestingParams.AreSlotsVisible);
                 puzzles[curPuzzle].Render(canvas, 20, 40);
             }
             else
@@ -81,18 +82,20 @@ namespace PuzzleGame
 
         private void NextPuzzleClick(object sender, RoutedEventArgs e)
         {
-            NextPuzzle();    
+            NextPuzzle();
         }
 
         private void NextPuzzle()
         {
+            Datawriter.DataConsumer("Probe_end", System.DateTime.Now, 0, 0, "");
+
             timer.Stop();
-            if (TestingParams.IsFeedbackNeeded)
+            if (TestingParams.IsFeedbackNeeded && timeLeft.Text != "0")
             {
                 if (puzzles[curPuzzle].IsSolved)
-                    MessageBox.Show("Задание решено верно", "Поздравляем!");
+                    MessageBox.Show("Задание решено верно", "Поздравляем!", MessageBoxButton.OK, MessageBoxImage.Asterisk);
                 else
-                    MessageBox.Show("Задание решено неверно", "Увы...");
+                    MessageBox.Show("Задание решено неверно", "Увы...", MessageBoxButton.OK, MessageBoxImage.Asterisk);
             }
 
             if (++curPuzzle < puzzles.Count)
@@ -100,9 +103,10 @@ namespace PuzzleGame
                 numAttemptsLeft.Text = puzzles[curPuzzle].AttemptsLeft.ToString();
                 newAttempt.IsEnabled = true;
                 canvas.Children.Clear();
-                puzzles[curPuzzle].RenderSlots(canvas, 20, 40);
+                puzzles[curPuzzle].RenderSlots(canvas, 20, 40, TestingParams.AreSlotsVisible);
                 puzzles[curPuzzle].Render(canvas, 20, 40); 
                 timer.Start();
+                Datawriter.DataConsumer("Probe_start", System.DateTime.Now, 0, 0, "");
             }
             else
             {

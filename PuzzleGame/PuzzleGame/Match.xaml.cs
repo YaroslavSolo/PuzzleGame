@@ -1,16 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Text;
-using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using PuzzleInterpretation;
 
 namespace PuzzleGame
@@ -54,24 +44,15 @@ namespace PuzzleGame
             }
         }
 
-        public TranslateTransform GetOffset()
-        {
-            foreach (var el in ((TransformGroup)RenderTransform).Children)
-            {
-                if (el is TranslateTransform)
-                    return (TranslateTransform)el;
-            }
-
-            return null;
-        }
-
         public int SymbolNum { get; set; }
 
         public int MatchNum { get; set; }
 
         public bool Horizontal { get; set; }
 
-        private MatchesPuzzle Puzzle { get; set; }
+        public bool WasMoved { get; set; }
+
+        public MatchesPuzzle Puzzle { get; set; }
 
         public Slot Slot { get; set; }
 
@@ -81,6 +62,17 @@ namespace PuzzleGame
             {
                 return $"{SymbolNum}_{MatchNum}";
             }
+        }
+
+        public TranslateTransform GetOffset()
+        {
+            foreach (var el in ((TransformGroup)RenderTransform).Children)
+            {
+                if (el is TranslateTransform)
+                    return (TranslateTransform)el;
+            }
+
+            return null;
         }
 
         public void SetCoordinates(double x, double y)

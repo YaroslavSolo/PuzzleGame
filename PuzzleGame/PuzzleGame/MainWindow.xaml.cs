@@ -1,17 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using System.Text.RegularExpressions;
 using Microsoft.Win32;
 using FileReading;
@@ -31,17 +20,24 @@ namespace PuzzleGame
             InitializeComponent();
         }
 
-        private void NumberValidationTextBox(object sender, TextCompositionEventArgs e)
+        private void NumberValidationTextBox1(object sender, TextCompositionEventArgs e)
         {
             Regex regex = new Regex("[^0-9]+");
-            e.Handled = regex.IsMatch(e.Text);
+            e.Handled = regex.IsMatch(e.Text) || attemptDuration.Text.Length > 3;
+        }
+
+        private void NumberValidationTextBox2(object sender, TextCompositionEventArgs e)
+        {
+            Regex regex = new Regex("[^0-9]+");
+            e.Handled = regex.IsMatch(e.Text) || numAttempts.Text.Length > 2;
         }
 
         private void StartTest(object sender, RoutedEventArgs e)
         {
             if (parameters.Puzzles.Count == 0)
             {
-                MessageBox.Show("Задания не были загружены, так как файл не был выбран или содержит ошибки", "Ошибка");
+                MessageBox.Show("Задания не были загружены, так как файл не был выбран или содержит ошибки",
+                    "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
 
@@ -51,12 +47,13 @@ namespace PuzzleGame
                 parameters.NumAttempts = int.Parse(numAttempts.Text);
                 parameters.Description = description.Text;
                 parameters.IsFeedbackNeeded = isFeedbackNeeded.IsChecked.Value;
+                parameters.AreSlotsVisible = areSlotsVisible.IsChecked.Value;
 
                 Content = new ParticipantForm(parameters);
             }
             else
             {
-                MessageBox.Show("Заданы не все параметры эксперимента", "Ошибка");
+                MessageBox.Show("Заданы не все параметры эксперимента", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
@@ -69,10 +66,15 @@ namespace PuzzleGame
                 var rawPuzzles = FileStreams.readCsvFile(openFileDialog.FileName);
                 List<MatchesPuzzle> puzzles = new List<MatchesPuzzle>();
 
-                foreach (var puzzle in rawPuzzles)
+                try
                 {
-                    puzzles.Add(new MatchesPuzzle(puzzle));
+                    foreach (var puzzle in rawPuzzles)
+                    {
+                        puzzles.Add(new MatchesPuzzle(puzzle));
+                    }
                 }
+                catch
+                {}
 
                 parameters.Puzzles = puzzles;
             }

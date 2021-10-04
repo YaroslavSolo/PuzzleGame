@@ -1,16 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using System.Text.RegularExpressions;
+using DataAnalysis;
 
 namespace PuzzleGame
 {
@@ -28,15 +20,35 @@ namespace PuzzleGame
             description.Text = parameters.Description;
         }
 
+        private void LengthValidationTextBox(object sender, TextCompositionEventArgs e)
+        {
+            e.Handled = nickNameTextBox.Text.Length > 25;
+        }
+
         private void NumberValidationTextBox(object sender, TextCompositionEventArgs e)
         {
             Regex regex = new Regex("[^0-9]+");
-            e.Handled = regex.IsMatch(e.Text);
+            e.Handled = regex.IsMatch(e.Text) || numericTextBox.Text.Length > 2;
         }
 
         private void ShowExample(object sender, RoutedEventArgs e)
         {
-            Content = new ExamplePage(TestingParams);
+            string gender = "not_stated";
+
+            if (maleRadioButton.IsChecked.Value)
+                gender = "male";
+            if (femaleRadioButton.IsChecked.Value)
+                gender = "female";
+
+            if (nickNameTextBox.Text != "" && numericTextBox.Text != "")
+            {
+                Datawriter.DataConsumer(nickNameTextBox.Text, System.DateTime.Now, int.Parse(numericTextBox.Text), 0, gender);
+                Content = new ExamplePage(TestingParams);
+            }
+            else
+            {
+                MessageBox.Show("Пожалуйста, заполните все поля", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
     }
 }

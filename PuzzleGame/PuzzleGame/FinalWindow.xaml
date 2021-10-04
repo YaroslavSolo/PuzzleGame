@@ -6,9 +6,17 @@
       xmlns:local="clr-namespace:PuzzleGame"
       mc:Ignorable="d" 
       Height="450" Width="800"
-      FontSize="14">
+      FontSize="20">
 
     <Grid>
-        <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center">Эксперимент завершен</TextBlock>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="200"></RowDefinition>
+            <RowDefinition Height="25"></RowDefinition>
+            <RowDefinition Height="25"></RowDefinition>
+            <RowDefinition Height="200"></RowDefinition>
+        </Grid.RowDefinitions>
+        
+        <TextBlock Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center">Эксперимент завершен</TextBlock>
+        <TextBlock Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Center">Спасибо за участие!</TextBlock>
     </Grid>
 </ContentControl>
