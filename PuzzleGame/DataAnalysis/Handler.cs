@@ -17,7 +17,7 @@ namespace DataAnalysis
 
         public static void DataConsmer(string type, DateTime time, int x, int y, string obj)
         {
-            FileStreams.writeToFile("../../../working_result.txt", "" + type + ":" + ((DateTimeOffset)time).ToUnixTimeMilliseconds() + ":" + x + ":" + y + ":" + obj + ";");
+            FileStreams.writeToFile("../../../working_result.txt", "" + type + ":" + ((DateTimeOffset)time).ToUnixTimeMilliseconds() + ":" + x + ":" + y + ":" + obj + "\n");
         }
     }
 

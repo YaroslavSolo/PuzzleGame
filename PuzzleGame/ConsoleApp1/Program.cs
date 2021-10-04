@@ -9,7 +9,7 @@ namespace ConsoleApp1
     {
         public static void Main()
         {
-            //try
+            try
             {
                 Console.Write("Please inpet path to data file: ");
                 string s = Console.ReadLine();
@@ -31,10 +31,10 @@ namespace ConsoleApp1
                     FileReading.FileStreams.writeToFile(sr, "" + (i+1) + "," + probes[i].ToStringCSV() + "\n");
                 }
             }
-            //catch(Exception e)
-            //{
-            //    Console.WriteLine("Program ends with some problem: " + e.Message);
-            //}
+            catch(Exception e)
+            {
+                Console.WriteLine("Program ends with some problem: " + e.Message);
+            }
         }
     }
 }
