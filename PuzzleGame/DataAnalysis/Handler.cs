@@ -15,7 +15,7 @@ namespace DataAnalysis
             dataDel = DataConsumer;
         }
 
-        public static void DataConsumer(string type, DateTime time, int x, int y, string objId)
+        public static void DataConsumer(string type, DateTime time, int x, int y, string obj)
         {
             FileStreams.writeToFile("../../../../working_result.txt", "" + type + ":" + ((DateTimeOffset)time).ToUnixTimeMilliseconds() + ":" + x + ":" + y + ":" + obj + "\n");
         }
