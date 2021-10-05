@@ -215,7 +215,7 @@ namespace DataAnalysis
                     string[] res = s.Split(':');
                     if (res[0] == "Probe_start")
                     {
-                        if (history.Count != 0 || history.Count > 0 && history[history.Count - 1].type != EventTypes.Probe_end)
+                        if (history.Count != 0 && history[history.Count - 1].type != EventTypes.Probe_end)
                         {
                             throw new FormatException("Broken data!");
                         }
@@ -265,7 +265,8 @@ namespace DataAnalysis
                     // Other cathchers dont realized, because for this task they are not needed (front does not working yet).
                 }
             }
-            catch(Exception e){
+            catch(Exception e)
+            {
                 throw new FormatException("Broken data!", e);
             }
 
