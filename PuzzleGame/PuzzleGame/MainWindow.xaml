@@ -5,16 +5,20 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PuzzleGame"
         mc:Ignorable="d"
-        Title="PuzzleGame" Height="450" Width="800" FontSize="14">
+        Title="PuzzleGame" Height="500" Width="1000" FontSize="14"
+        MinHeight="500" MinWidth="1000">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition></ColumnDefinition>
             <ColumnDefinition></ColumnDefinition>
         </Grid.ColumnDefinitions>
-
+        
+        <Border Grid.Row="0" Grid.Column="0"  Background="LightGoldenrodYellow"/>
+        <Border Grid.Row="0" Grid.Column="1"  Background="LightGoldenrodYellow"/>
+        
         <StackPanel Grid.Column="1" Margin="0,30,0,0">
             <TextBlock HorizontalAlignment="Center" FontWeight="Bold">Описание эксперимента</TextBlock>
-            <TextBox Name="description" TextWrapping="Wrap" AcceptsReturn="True" Margin="20,20,20,20" xml:space="preserve">
+            <TextBox Name="description" TextWrapping="Wrap" AcceptsReturn="True" Margin="10,10,10,10" xml:space="preserve">
 Здравствуйте! Спасибо, что согласились поучаствовать в этом эксперименте. Сейчас Вам предстоит решить серию задач.&#x0d;&#x0a;
 Каждая задача представляет собой неправильное арифметическое равенство, выложенное из спичек. Вам необходимо переложить одну или несколько спичек так, чтобы исправить равенство. Первая задача будет ознакомительная.
                 &#x0d;&#x0a;Перед началом эксперимента, если у Вас возникли какие-то вопросы, не стесняйтесь задавать экспериментатору.

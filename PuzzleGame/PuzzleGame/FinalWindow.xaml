@@ -5,17 +5,18 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:PuzzleGame"
       mc:Ignorable="d" 
-      Height="450" Width="800"
+      Height="500" Width="1000"
+      MinHeight="500" MinWidth="1000"
       FontSize="20">
 
-    <Grid>
+    <Grid Background="LightGoldenrodYellow">
         <Grid.RowDefinitions>
             <RowDefinition Height="200"></RowDefinition>
             <RowDefinition Height="25"></RowDefinition>
             <RowDefinition Height="25"></RowDefinition>
             <RowDefinition Height="200"></RowDefinition>
         </Grid.RowDefinitions>
-        
+
         <TextBlock Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center">Эксперимент завершен</TextBlock>
         <TextBlock Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Center">Спасибо за участие!</TextBlock>
     </Grid>

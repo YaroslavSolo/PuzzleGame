@@ -46,7 +46,11 @@ namespace PuzzleGame
             AssociatedObject.MouseLeftButtonDown += (sender, e) =>
             {
                 if (match.Puzzle.MatchesToMoveLeft < 1 && !match.WasMoved)
+                {
+                    match.Puzzle.SignalNoMovesLeft();
                     return;
+                }
+       
                 match.Slot.ContentMatch = null;
                 if (e.ClickCount == 2)
                 {

@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace ConsoleApp1
 {
-    class Program
+    public class Program
     {
         public static void Main()
         {

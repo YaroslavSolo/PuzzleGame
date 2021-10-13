@@ -75,8 +75,15 @@ namespace PuzzleInterpretation
                     slot.ContentMatch = m;
                     m.Slot.ContentMatch = null;
                     m.Slot = slot;
-                    m.GetOffset().X += slot.X - m.RealX;
-                    m.GetOffset().Y += slot.Y - m.RealY;
+                    if (m.Horizontal)
+                    {
+
+                    } else
+                    {
+                        m.GetOffset().X += slot.X - m.RealX;
+                        m.GetOffset().Y += slot.Y - m.RealY;
+                    }
+
                     return true;
                 }
             }

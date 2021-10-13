@@ -11,6 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\ConsoleApp1\DataAnalysisClient.csproj" />
     <ProjectReference Include="..\DataAnalysis\DataAnalysisLib.csproj" />
     <ProjectReference Include="..\FileReading\FileReading.csproj" />
   </ItemGroup>

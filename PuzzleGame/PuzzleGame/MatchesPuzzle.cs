@@ -1,5 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using System.Windows.Controls;
+using System.Windows.Media;
+using System.Windows.Threading;
 using PuzzleGame;
 
 namespace PuzzleInterpretation
@@ -25,6 +29,8 @@ namespace PuzzleInterpretation
         public int MatchesToMove { get; private set; }
 
         public int MatchesToMoveLeft { get; set; }
+
+        public ExamplePage ParentPage { get; set; }
 
         public bool IsSolved
         {
@@ -58,6 +64,19 @@ namespace PuzzleInterpretation
             digits[2] = new Digit(task[4] - '0', this, 5);
         }
 
+        public async void SignalNoMovesLeft()
+        {
+            for (int i = 0; i < 3; ++i)
+            {
+                ParentPage.movesLeft.Foreground = new SolidColorBrush(Colors.Red);
+                ParentPage.movesLeftText.Foreground = new SolidColorBrush(Colors.Red);
+                await Task.Delay(250);
+                ParentPage.movesLeft.Foreground = new SolidColorBrush(Colors.Black);
+                ParentPage.movesLeftText.Foreground = new SolidColorBrush(Colors.Black);
+                await Task.Delay(250);
+            }
+        }
+
         public void RenderSlots(Panel canvas, int x, int y, bool areSlotsVisible)
         {
             digits[0].RenderSlots(canvas, x, y, areSlotsVisible);
@@ -84,6 +103,7 @@ namespace PuzzleInterpretation
             if (!match.WasMoved)
             {
                 --MatchesToMoveLeft;
+                ParentPage.movesLeft.Text = MatchesToMoveLeft.ToString();
                 match.WasMoved = true;
             }
 

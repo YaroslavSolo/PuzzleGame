@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Windows;
+using System.IO;
 using System.Windows.Input;
 using System.Text.RegularExpressions;
 using Microsoft.Win32;
@@ -18,6 +19,33 @@ namespace PuzzleGame
         public MainWindow()
         {
             InitializeComponent();
+            LoadDescription();
+        }
+
+        private void LoadDescription()
+        {
+            string rawDescription = null;
+            try
+            {
+                rawDescription = File.ReadAllText("description.txt");
+            }
+            catch
+            { }
+
+            if (rawDescription != null && rawDescription != "")
+            {
+                description.Text = rawDescription;
+            }
+        }
+
+        private void SaveDescription()
+        {
+            try
+            {
+                File.WriteAllText("description.txt", description.Text);
+            }
+            catch
+            { }
         }
 
         private void NumberValidationTextBox1(object sender, TextCompositionEventArgs e)
@@ -49,6 +77,7 @@ namespace PuzzleGame
                 parameters.IsFeedbackNeeded = isFeedbackNeeded.IsChecked.Value;
                 parameters.AreSlotsVisible = areSlotsVisible.IsChecked.Value;
 
+                SaveDescription();
                 Content = new ParticipantForm(parameters);
             }
             else
